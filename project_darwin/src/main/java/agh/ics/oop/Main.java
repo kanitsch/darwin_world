@@ -1,5 +1,9 @@
 package agh.ics.oop;
 
+import agh.ics.oop.model.info.Constants;
+import agh.ics.oop.model.info.ConstantsList;
+import agh.ics.oop.model.maps.WorldMap;
+
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
@@ -13,5 +17,11 @@ public class Main {
             // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
             System.out.println("i = " + i);
         }
+
+//        Constants constants = new Constants(0, 0, 0, 5, 5, false, false, 0, 5, 0, 0, 0, 0, 0, 0);
+//        ConstantsList.addToConstantsList(0, constants);
+//        WorldMap map = new WorldMap(0);
+//        System.out.println(map);
     }
+
 }

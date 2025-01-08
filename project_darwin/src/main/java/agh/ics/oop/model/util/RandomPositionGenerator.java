@@ -1,43 +1,62 @@
 package agh.ics.oop.model.util;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
+import agh.ics.oop.model.creatures.Grass;
+import agh.ics.oop.model.creatures.LargeGrass;
+import agh.ics.oop.model.info.Constants;
+import agh.ics.oop.model.info.ConstantsList;
 
-public class RandomPositionGenerator implements PositionGenerator{
-    private final List<Vector2d> used=new ArrayList<Vector2d>();
+import java.util.*;
 
+public class RandomPositionGenerator implements PositionGenerator {
+    private final Random random = new Random();
+    private final int mapHeight;
+    private final int mapWidth;
+    private final int numberOfPlants;
+    private final List<Vector2d> positions;
+    private final Map<Vector2d, Grass> grass;
 
-    public RandomPositionGenerator(int maxWidth, int maxHeight, int numberOfGrass) {
-    Random random = new Random();
-    List<Vector2d> unused = new ArrayList<Vector2d>();
-        for(
-    int i = 0;
-    i<maxWidth;i++)
-
-    {
-        for (int j = 0; j < maxHeight; j++) {
-            unused.add(new Vector2d(i, j));
-        }
+    public RandomPositionGenerator(int simulationId, Map<Vector2d, Grass> grass, Map<Vector2d, LargeGrass> largeGrass, int numberOfPlants) {
+        Constants constants = ConstantsList.getConstants(simulationId);
+        this.mapHeight = constants.getMAP_HEIGHT();
+        this.mapWidth = constants.getMAP_WIDTH();
+        this.numberOfPlants=numberOfPlants;
+        this.grass=grass;
+        this.positions=new ArrayList<>();
     }
 
-        for(
-    int i = 0;
-    i<numberOfGrass;i++)
+    @Override
+    public void initializePositions() {
+        for (int x = 0; x <= mapWidth; x++) {
+            for (int y = 0; y <= mapHeight; y++) {
+                Vector2d position = new Vector2d(x, y);
+                if (!grass.containsKey(position)) {
+                    positions.add(position);
+                }
+            }
 
-    {
-        int size = unused.size();
-        int idx = random.nextInt(size);
-        Vector2d newPosition = unused.remove(idx);
-        used.add(newPosition);
-    }}
+        }
+    }
+    @Override
+    public List<Vector2d> generatePositions() {
+            List<Vector2d> generatedPositions = new ArrayList<>();
+            initializePositions();
+            for (int i=0; i<numberOfPlants; i++){
+                generatedPositions.add(getRandomPosition(positions));
+        }
+        return generatedPositions;
+    }
+
+        private Vector2d getRandomPosition(List<Vector2d> positions) {
+                int size = positions.size();
+                int idx = random.nextInt(size);
+                return positions.remove(idx);
+            }
 
 
+    @Override
+    public Iterator<Vector2d> iterator() {
+        return new PositionIterator(generatePositions());
+    }
+}
 
-
-@Override
-public Iterator<Vector2d> iterator() {
-    return new PositionIterator(used);
-}}
 

@@ -17,13 +17,13 @@ public class EquatorPreferredGenerator implements PositionGenerator {
     private final Map<Vector2d, Grass> grass;
 
 
-    public EquatorPreferredGenerator(int simulationId, Map<Vector2d, Grass> grass) {
+    public EquatorPreferredGenerator(int simulationId, Map<Vector2d, Grass> grass, int numberOfPlants) {
         this.preferredPositions = new ArrayList<>();
         this.nonPreferredPositions = new ArrayList<>();
         this.constants= ConstantsList.getConstants(simulationId);
         this.mapHeight = constants.getMAP_HEIGHT();
         this.mapWidth = constants.getMAP_WIDTH();
-        this.numberOfPlants=constants.getNUMBER_OF_PLANTS();
+        this.numberOfPlants=numberOfPlants;
         this.grass=grass;
 
 
@@ -32,8 +32,8 @@ public class EquatorPreferredGenerator implements PositionGenerator {
         int equatorStart= (int) (constants.getMAP_HEIGHT()*0.4);
         int equatorEnd= (int) (constants.getMAP_HEIGHT()*0.6);
 
-        for (int x=0; x<mapWidth; x++){
-            for (int y=0; y<mapHeight; y++){
+        for (int x=0; x<=mapWidth; x++){
+            for (int y=0; y<=mapHeight; y++){
                 Vector2d position = new Vector2d(x,y);
                 if (!grass.containsKey(position)) {
                     if (y >= equatorStart && y <= equatorEnd) {
@@ -60,6 +60,7 @@ public class EquatorPreferredGenerator implements PositionGenerator {
 
             return generatedPositions;
         }
+
         private Vector2d getRandomPosition(List<Vector2d> positions) {
             int size = positions.size();
             int idx = random.nextInt(size);

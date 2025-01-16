@@ -15,7 +15,7 @@ public class RandomPositionGenerator implements PositionGenerator {
     private final List<Vector2d> positions;
     private final Map<Vector2d, Grass> grass;
 
-    public RandomPositionGenerator(int simulationId, Map<Vector2d, Grass> grass, Map<Vector2d, LargeGrass> largeGrass, int numberOfPlants) {
+    public RandomPositionGenerator(int simulationId, Map<Vector2d, Grass> grass, int numberOfPlants) {
         Constants constants = ConstantsList.getConstants(simulationId);
         this.mapHeight = constants.getMAP_HEIGHT();
         this.mapWidth = constants.getMAP_WIDTH();

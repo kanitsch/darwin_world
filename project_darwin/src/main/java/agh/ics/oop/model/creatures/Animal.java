@@ -17,6 +17,7 @@ public class Animal implements WorldElement {
     private int childrenNumber = 0;
     private int eatenPlantsNumber = 0;
     private Genome genome;
+    private int age;
 
 
     public Animal(Vector2d position, int simulationId, int energy, Genome genome) {
@@ -27,6 +28,7 @@ public class Animal implements WorldElement {
         this.direction = MapDirection.values()[(int) (Math.random() * MapDirection.values().length)];
         this.energy = energy;
         this.genome = genome;
+        this.age = 0;
     }
 
 
@@ -58,6 +60,8 @@ public class Animal implements WorldElement {
 
     public int getEatenPlantsNumber() {return this.eatenPlantsNumber;}
 
+    public int getAge() {return this.age;}
+
     public void setPosition(Vector2d position) {this.position = position;}
 
     public String toString() {
@@ -68,9 +72,14 @@ public class Animal implements WorldElement {
         return this.position.equals(position);
     }
 
+    public void incrementAge(){
+        this.age++;
+    }
+
+
     public void move() {
         direction = direction.rotate(genome.getCurrentGene());
-        position.add(direction.toUnitVector());
+        position = position.add(direction.toUnitVector());
     }
 
     public void consume() {

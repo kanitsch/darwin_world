@@ -51,17 +51,24 @@ public class EquatorPreferredGenerator implements PositionGenerator {
             initializePositions();
 
             for (int i = 0; i < numberOfPlants; i++) {
-                if (random.nextDouble() < 0.8) {
+                if (random.nextDouble() < 0.8 && preferredPositions.size() > 0) {
                     generatedPositions.add(getRandomPosition(preferredPositions));
                 } else {
-                    generatedPositions.add(getRandomPosition(nonPreferredPositions));
+                    if (nonPreferredPositions.size() > 0) {
+                        generatedPositions.add(getRandomPosition(nonPreferredPositions));
+                    }
                 }
             }
-
             return generatedPositions;
         }
 
-        private Vector2d getRandomPosition(List<Vector2d> positions) {
+    @Override
+    public boolean contains(Vector2d vector2d) {
+        return false;
+        // ta metoda jest tu nie potrzebna, ale musi byc zachowany interfejs positiongenerator
+    }
+
+    private Vector2d getRandomPosition(List<Vector2d> positions) {
             int size = positions.size();
             int idx = random.nextInt(size);
             return positions.remove(idx);

@@ -13,15 +13,6 @@ public class LargeGrass extends Grass {
             this.position = position;
         }
 
-        public List<Vector2d> getCoveredPositions() {
-            List<Vector2d> coveredPositions = new ArrayList<>();
-            for (int x = 0; x < 2; x++) {
-                for (int y = 0; y < 2; y++) {
-                    coveredPositions.add(new Vector2d(position.getX() + x, position.getY() + y));
-                }
-            }
-            return coveredPositions;
-        }
 
     @Override
     public String toString() {

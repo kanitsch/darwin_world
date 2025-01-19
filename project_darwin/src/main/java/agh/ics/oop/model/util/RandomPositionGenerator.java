@@ -14,6 +14,7 @@ public class RandomPositionGenerator implements PositionGenerator {
     private final int numberOfPlants;
     private final List<Vector2d> positions;
     private final Map<Vector2d, Grass> grass;
+    private final List<Vector2d> plants;
 
     public RandomPositionGenerator(int simulationId, Map<Vector2d, Grass> grass, int numberOfPlants) {
         Constants constants = ConstantsList.getConstants(simulationId);
@@ -22,6 +23,7 @@ public class RandomPositionGenerator implements PositionGenerator {
         this.numberOfPlants=numberOfPlants;
         this.grass=grass;
         this.positions=new ArrayList<>();
+        this.plants=generatePositions();
     }
 
     @Override
@@ -41,9 +43,11 @@ public class RandomPositionGenerator implements PositionGenerator {
             List<Vector2d> generatedPositions = new ArrayList<>();
             initializePositions();
             for (int i=0; i<numberOfPlants; i++){
-                generatedPositions.add(getRandomPosition(positions));
-        }
-        return generatedPositions;
+                if (positions.size()>0) {
+                    generatedPositions.add(getRandomPosition(positions));
+                }
+            }
+            return generatedPositions;
     }
 
         private Vector2d getRandomPosition(List<Vector2d> positions) {
@@ -52,10 +56,14 @@ public class RandomPositionGenerator implements PositionGenerator {
                 return positions.remove(idx);
             }
 
+    public boolean contains(Vector2d position) {
+        return this.plants.contains(position);
+    }
+
 
     @Override
     public Iterator<Vector2d> iterator() {
-        return new PositionIterator(generatePositions());
+        return new PositionIterator(plants);
     }
 }
 

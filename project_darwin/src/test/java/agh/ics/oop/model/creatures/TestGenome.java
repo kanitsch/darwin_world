@@ -28,6 +28,7 @@ public class TestGenome {
                 0,
                 0,
                 0,
+                0,
                 0
         );
         ConstantsList.addToConstantsList(1, constants);
@@ -58,6 +59,7 @@ public class TestGenome {
                 0,
                 0,
                 0,
+                0,
                 0
         );        ConstantsList.addToConstantsList(1, constants);
         Genome genome = new Genome(1);
@@ -76,17 +78,18 @@ public class TestGenome {
     public void testMutate() {
         int[] geneList = {1,2,4,2,4,5,6,7,8,2};
         Constants constants = new Constants(
+                10,
+                12,
+                12,
+                0,
+                0,
+                false,
+                false,
+                0,
+                0,
+                10,
+                1,
                 3,
-                12,
-                12,
-                0,
-                0,
-                false,
-                false,
-                0,
-                0,
-                0,
-                0,
                 0,
                 0,
                 0,
@@ -107,6 +110,7 @@ public class TestGenome {
                 0,
                 false,
                 false,
+                0,
                 0,
                 0,
                 0,
@@ -138,6 +142,7 @@ public class TestGenome {
                 0,
                 false,
                 false,
+                0,
                 0,
                 0,
                 0,

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Button?>
+<?import java.net.URL?>
+<?import com.sun.javafx.scene.control.IntegerField?>
+<GridPane xmlns:fx="http://javafx.com/fxml"
+          fx:controller="agh.ics.oop.presenter.MenuPresenter"
+          styleClass="grid-pane"
+          alignment="CENTER">
+    <stylesheets>
+        <URL value="@style/menu.css"/>
+    </stylesheets>
+
+    <Label text="Number of Genes" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+    <IntegerField fx:id="numberOfGenes" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+    <Label text="Starting Animal Energy" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+    <IntegerField fx:id="startingAnimalEnergy" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+    <Label text="Energy From Plant" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+    <IntegerField fx:id="energyFromPlant" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+    <Label text="Map Width" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+    <IntegerField fx:id="mapWidth" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+
+    <Label text="Map Height" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+    <IntegerField fx:id="mapHeight" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+
+
+    <Label text="Number of Animals" GridPane.columnIndex="0" GridPane.rowIndex="7"/>
+    <IntegerField fx:id="numberOfAnimals" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
+
+    <Label text="Number of Plants" GridPane.columnIndex="0" GridPane.rowIndex="8"/>
+    <IntegerField fx:id="numberOfPlants" GridPane.columnIndex="1" GridPane.rowIndex="8"/>
+
+    <Label text="Genome Length" GridPane.columnIndex="0" GridPane.rowIndex="9"/>
+    <IntegerField fx:id="geneomeLength" GridPane.columnIndex="1" GridPane.rowIndex="9"/>
+
+    <Label text="Min Mutations" GridPane.columnIndex="0" GridPane.rowIndex="10"/>
+    <IntegerField fx:id="minMutations" GridPane.columnIndex="1" GridPane.rowIndex="10"/>
+
+    <Label text="Max Mutations" GridPane.columnIndex="0" GridPane.rowIndex="11"/>
+    <IntegerField fx:id="maxMutations" GridPane.columnIndex="1" GridPane.rowIndex="11"/>
+
+    <Label text="Plants Per Day" GridPane.columnIndex="0" GridPane.rowIndex="12"/>
+    <IntegerField fx:id="plantsPerDay" GridPane.columnIndex="1" GridPane.rowIndex="12"/>
+
+    <Label text="Minimal Breeding Energy" GridPane.columnIndex="0" GridPane.rowIndex="13"/>
+    <IntegerField fx:id="minimalBreedingEnergy" GridPane.columnIndex="1" GridPane.rowIndex="13"/>
+
+    <Label text="Energy Lost for Reproduction" GridPane.columnIndex="0" GridPane.rowIndex="14"/>
+    <IntegerField fx:id="energyLostForReproduction" GridPane.columnIndex="1" GridPane.rowIndex="14"/>
+
+    <Label text="Energy Lost Per Day" GridPane.columnIndex="0" GridPane.rowIndex="15"/>
+    <IntegerField fx:id="energyLostPerDay" GridPane.columnIndex="1" GridPane.rowIndex="15"/>
+
+
+    <HBox styleClass="checkbox-group" GridPane.columnIndex="0" GridPane.rowIndex="16" GridPane.columnSpan="2">
+        <CheckBox text="Good Harvest" fx:id="goodHarvest"/>
+        <CheckBox text="Complete Random" fx:id="completeRandom"/>
+        <CheckBox text="Export Statistics" fx:id="formExportStatistics"/>
+    </HBox>
+
+
+    <HBox spacing="10" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="17" GridPane.columnSpan="2">
+        <Button text="Create Game" fx:id="createGame"/>
+        <Button text="Export Configuration" fx:id="exportConfiguration"/>
+        <Button text="Import Configuration" fx:id="importConfiguration"/>
+    </HBox>
+</GridPane>

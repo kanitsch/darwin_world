@@ -16,6 +16,7 @@ public class Constants {
     private int PLANTS_PER_DAY;
     private int MINIMAL_BREEDING_ENERGY;
     private int ENERGY_LOST_FOR_REPRODUCTION;
+    private int ENERGY_LOST_PER_DAY;
 
 
 
@@ -26,7 +27,20 @@ public class Constants {
     public Constants (
             int NUMBER_OF_GENES,
             int STARTING_ANIMAL_ENERGY,
-            int ENERGY_FROM_PLANT, int mapWidth, int mapHeight, boolean goodHarvest, boolean completeRandom, int numberOfAnimals, int numberOfPlants, int genomeLength, int minMutations, int maxMutations, int plantsPerDay, int minimalBreedingEnergy, int energyLostForReproduction
+            int ENERGY_FROM_PLANT,
+            int mapWidth,
+            int mapHeight,
+            boolean goodHarvest,
+            boolean completeRandom,
+            int numberOfAnimals,
+            int numberOfPlants,
+            int genomeLength,
+            int minMutations,
+            int maxMutations,
+            int plantsPerDay,
+            int minimalBreedingEnergy,
+            int energyLostForReproduction,
+            int energyLostPerDay
     ) {
         this.NUMBER_OF_GENES = NUMBER_OF_GENES;
         this.STARTING_ANIMAL_ENERGY = STARTING_ANIMAL_ENERGY;
@@ -42,6 +56,7 @@ public class Constants {
         MIN_MUTATIONS = minMutations;
         MAX_MUTATIONS = maxMutations;
         PLANTS_PER_DAY = plantsPerDay;
+        ENERGY_LOST_PER_DAY = energyLostPerDay;
         MINIMAL_BREEDING_ENERGY = minimalBreedingEnergy;
         ENERGY_LOST_FOR_REPRODUCTION = energyLostForReproduction;
     }
@@ -93,6 +108,9 @@ public class Constants {
     }
     public int getMINIMAL_BREEDING_ENERGY () {
         return MINIMAL_BREEDING_ENERGY;
+    }
+    public int getENERGY_LOST_PER_DAY() {
+        return ENERGY_LOST_PER_DAY;
     }
 
 

@@ -1,3 +1,4 @@
+
 package agh.ics.oop.model.creatures;
 
 import agh.ics.oop.model.enums.MapDirection;

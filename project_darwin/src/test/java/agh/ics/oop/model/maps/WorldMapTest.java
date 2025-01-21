@@ -12,7 +12,7 @@ public class WorldMapTest {
 
     @Test
     public void placeAnimalOnMap() {
-        Constants constants = new Constants(0, 0, 0, 6, 4, false, false, 0, 5, 0, 0, 0, 3, 0, 0);
+        Constants constants = new Constants(0, 0, 0, 6, 4, false, false, 0, 5, 0, 0, 0, 3, 0, 0,0);
         ConstantsList.addToConstantsList(0, constants);
         Animal animal = new Animal(new Vector2d(2,2),0,5,new Genome(0));
         WorldMap map = new WorldMap(0);
@@ -22,7 +22,7 @@ public class WorldMapTest {
 
     @Test
     public void place2animalsAtTheSamePosition() {
-        Constants constants = new Constants(0, 0, 0, 6, 4, true, false, 0, 5, 0, 0, 0, 3, 0, 0);
+        Constants constants = new Constants(0, 0, 0, 6, 4, true, false, 0, 5, 0, 0, 0, 3, 0, 0,0);
         ConstantsList.addToConstantsList(0, constants);
         Animal aniimal1 = new Animal(new Vector2d(2,2),0,5,new Genome(0));
         Animal animal2 = new Animal(new Vector2d(2,2),0,5,new Genome(0));
@@ -35,7 +35,7 @@ public class WorldMapTest {
 
     @Test
     public void moveAnimal() {
-        Constants constants = new Constants(1, 1, 0, 6, 4, true, false, 0, 5, 1, 0, 0, 3, 0, 0);
+        Constants constants = new Constants(1, 1, 0, 6, 4, true, false, 0, 5, 1, 0, 0, 3, 0, 0,0);
         ConstantsList.addToConstantsList(0, constants);
         int[] genesList = {1};
         Genome genome = new Genome(0);
@@ -51,7 +51,7 @@ public class WorldMapTest {
 
     @Test
     public void removeDeadAnimal() {
-        Constants constants = new Constants(1, 1, 0, 6, 4, true, false, 0, 0, 1, 0, 0, 0, 0, 0);
+        Constants constants = new Constants(1, 1, 0, 6, 4, true, false, 0, 0, 1, 0, 0, 0, 0, 0,0);
         ConstantsList.addToConstantsList(0, constants);
         Animal animal = new Animal(new Vector2d(2,2),0,0,new Genome(0));
         Animal livingAnimal = new Animal(new Vector2d(3,2),0,5,new Genome(0));
@@ -67,7 +67,7 @@ public class WorldMapTest {
 
     @Test
     public void breedingOnMap(){
-        Constants constants = new Constants(1, 5, 0, 6, 4, true, false, 0, 5, 1, 0, 0, 3, 3, 2);
+        Constants constants = new Constants(1, 5, 0, 6, 4, true, false, 0, 5, 1, 0, 0, 3, 3, 2,0);
         ConstantsList.addToConstantsList(0, constants);
         Animal animal1 = new Animal(new Vector2d(2,2),0,5,new Genome(0));
         Animal animal2 = new Animal(new Vector2d(2,2),0,5,new Genome(0));
@@ -83,7 +83,7 @@ public class WorldMapTest {
 
     @Test
     public void growGrassTest(){
-        Constants constants = new Constants(0, 0, 0, 10, 10, true, false, 0, 5, 0, 0, 0, 20, 0, 0);
+        Constants constants = new Constants(0, 0, 0, 10, 10, true, false, 0, 5, 0, 0, 0, 20, 0, 0,0);
         ConstantsList.addToConstantsList(0, constants);
         WorldMap map = new WorldMap(0);
         assertEquals(5,map.getTotalPlants());
@@ -97,7 +97,7 @@ public class WorldMapTest {
 
     @Test
     public void animalsEatTest(){
-        Constants constants = new Constants(0, 0, 2, 3, 3, true, false, 0, 15, 1, 0, 0, 3, 0, 0);
+        Constants constants = new Constants(0, 0, 2, 3, 3, true, false, 0, 15, 1, 0, 0, 3, 0, 0,0);
         ConstantsList.addToConstantsList(0, constants);
         WorldMap map = new WorldMap(0);
         Animal animal1 = new Animal(new Vector2d(2,2),0,5,new Genome(0));

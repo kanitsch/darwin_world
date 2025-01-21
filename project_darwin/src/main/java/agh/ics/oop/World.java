@@ -7,7 +7,7 @@ import javafx.application.Application;
 
 public class World {
     public static void main(String[] args) {
-        /*
+
         System.out.print("System zaczal dzialac");
 
         Application.launch(SimulationApp.class);
@@ -15,7 +15,7 @@ public class World {
         System.out.println("System skonczyl dzialanie");
         System.exit(0);
 
-         */
+
     }
     public static void setUpConstants(int simulationId) {
         int NUMBER_OF_GENES = 10;

@@ -25,6 +25,12 @@ public class Genome {
         return geneList[currGeneIndex];
     }
 
+    public int getActivatedGene(){
+        int currentGene = getCurrentGene();
+        moveNumber--;
+        return currentGene;
+    }
+
     private void setStartGenomeIndex() {
         Random random = new Random();
         this.startGeneIndex = random.nextInt(8);
@@ -49,7 +55,8 @@ public class Genome {
     //mutation of random amount of genes from a range MIN - MAX
     public void mutate() {
         Random random = new Random();
-        int numberOfMutations = random.nextInt((constants.getMAX_MUTATIONS() - constants.getMIN_MUTATIONS())) + constants.getMIN_MUTATIONS();
+        int range = constants.getMAX_MUTATIONS() - constants.getMIN_MUTATIONS();
+        int numberOfMutations = range > 0 ? random.nextInt(range) + constants.getMIN_MUTATIONS() : constants.getMIN_MUTATIONS();
         List<Integer> indexes = new ArrayList<Integer>();
         for (int i = 0; i < constants.getNUMBER_OF_GENES(); i++) {
             indexes.add(i);

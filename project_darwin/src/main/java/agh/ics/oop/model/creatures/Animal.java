@@ -16,7 +16,9 @@ public class Animal implements WorldElement {
     private int energy;
     private int childrenNumber = 0;
     private int eatenPlantsNumber = 0;
+    private int dateOfBirth;
     private Genome genome;
+    private int age = 0;
 
 
     public Animal(Vector2d position, int simulationId, int energy, Genome genome) {
@@ -58,6 +60,10 @@ public class Animal implements WorldElement {
 
     public int getEatenPlantsNumber() {return this.eatenPlantsNumber;}
 
+    public int getDateOfBirth() {return this.dateOfBirth;}
+
+    public int getAge () {return this.age;}
+
     public void setPosition(Vector2d position) {this.position = position;}
 
     public String toString() {
@@ -69,8 +75,10 @@ public class Animal implements WorldElement {
     }
 
     public void move() {
+        //TODO: dodać wychodzenie za brzegi mapy i teleportowanie na drugą stronę
         direction = direction.rotate(genome.getCurrentGene());
         position.add(direction.toUnitVector());
+        age++;
     }
 
     public void consume() {
@@ -99,7 +107,7 @@ public class Animal implements WorldElement {
         return new Animal(father.position,father.getSimulationId(),energy,genome);
     }
 
-    //working on this
+
     public Animal breed (Animal partner) {
         if (energy < constants.getMINIMAL_BREEDING_ENERGY()
                 || partner.energy < constants.getMINIMAL_BREEDING_ENERGY())

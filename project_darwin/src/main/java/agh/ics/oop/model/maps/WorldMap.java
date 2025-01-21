@@ -5,24 +5,22 @@ import agh.ics.oop.model.creatures.Grass;
 import agh.ics.oop.model.creatures.WorldElement;
 import agh.ics.oop.model.info.Constants;
 import agh.ics.oop.model.info.ConstantsList;
-import agh.ics.oop.model.util.EquatorPreferredGenerator;
-import agh.ics.oop.model.util.PositionGenerator;
-import agh.ics.oop.model.util.RandomPositionGenerator;
-import agh.ics.oop.model.util.Vector2d;
+import agh.ics.oop.model.util.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class WorldMap {
-    private Map<Vector2d, Animal> animals = new HashMap<>();
+    private int simulationId;
+    private Map<Vector2d, List<Animal>> animals = new HashMap<>();
     private final Map<Vector2d, Grass> grass;
     private final int mapWidth;
     private final int mapHeight;
 
 
     public WorldMap(int simulationId) {
+        this.simulationId = simulationId;
         this.grass = new HashMap<>();
-        Constants constants = ConstantsList.getConstants(0);
+        Constants constants = ConstantsList.getConstants(simulationId);
         int numberOfPlants= constants.getNUMBER_OF_PLANTS();
         this.mapWidth= constants.getMAP_WIDTH();
         this.mapHeight= constants.getMAP_WIDTH();
@@ -42,20 +40,20 @@ public class WorldMap {
 
     public WorldElement objectAt(Vector2d position) {
         if (animals.get(position)!=null){
-            return animals.get(position);
+            if (animals.get(position).size() == 1) return animals.get(position).getFirst();
         }
         return grass.get(position);
     }
 
     public void place(Animal animal) {
-        animals.put(animal.getPosition(), animal);
+        animals.computeIfAbsent(animal.getPosition(), k -> new ArrayList<>()).add(animal);
     }
 
     public void move(Animal animal) {
         Vector2d oldPosition = animal.getPosition();
         animal.move();
         animals.remove(oldPosition);
-        animals.put(animal.getPosition(), animal);
+        animals.computeIfAbsent(animal.getPosition(), k -> new ArrayList<>()).add(animal);
     }
 
 
@@ -64,4 +62,21 @@ public class WorldMap {
         MapVisualizer map=new MapVisualizer(this);
         return map.draw(new Vector2d(0,0), new Vector2d(mapWidth,mapHeight));
     }
+
+    public Map<Vector2d, List<Animal>> GetAnimals () {
+        return animals;
+    }
+
+    public Map<Vector2d, Grass> getGrass() {
+        return grass;
+    }
+
+
+    public int getSimulationId() {
+        return simulationId;
+    }
+
+
+
 }
+

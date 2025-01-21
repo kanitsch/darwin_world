@@ -1,0 +1,129 @@
+.root {
+    -fx-background-color: linear-gradient(to bottom right, #EEF2FF, #abbbf8);
+    -fx-padding: 20;
+}
+
+
+.grid-pane {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-padding: 20;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0, 0, 4);
+}
+
+.label {
+    -fx-font-family: "Segoe UI", "Arial", sans-serif;
+    -fx-font-size: 14px;
+    -fx-text-fill: #374151;
+}
+
+.text-field {
+    -fx-background-color: white;
+    -fx-background-radius: 4;
+    -fx-border-color: #D1D5DB;
+    -fx-border-radius: 4;
+    -fx-padding: 5 10 5 10;
+    -fx-font-size: 14px;
+
+}
+
+
+.text-field:focused {
+    -fx-border-color: #4F46E5;
+    -fx-effect: dropshadow(gaussian, rgba(79, 70, 229, 0.2), 4, 0, 0, 0);
+}
+
+.check-box {
+    -fx-font-size: 14px;
+    -fx-padding: 10;
+}
+
+.check-box .box {
+    -fx-background-color: white;
+    -fx-border-color: #D1D5DB;
+    -fx-border-radius: 3;
+}
+
+.check-box:selected .box {
+    -fx-background-color: #4F46E5;
+    -fx-border-color: #4F46E5;
+}
+
+.check-box:selected .mark {
+    -fx-background-color: white;
+}
+
+.button {
+    -fx-background-color: #4F46E5;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 8 16 8 16;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #4338CA;
+}
+
+#createGame {
+    -fx-background-color: #4F46E5;
+}
+
+#exportConfiguration {
+    -fx-background-color: #059669;
+}
+
+#importConfiguration {
+    -fx-background-color: #2563EB;
+}
+
+.h-box {
+    -fx-spacing: 10;
+    -fx-alignment: center;
+    -fx-padding: 20 0 0 0;
+}
+
+/* Integer Fields Styling */
+.integer-field {
+    -fx-background-color: white;
+    -fx-background-radius: 4;
+    -fx-border-color: #D1D5DB;
+    -fx-border-radius: 4;
+    -fx-padding: 5 10 5 10;
+    -fx-font-size: 14px;
+}
+
+.integer-field:focused {
+    -fx-border-color: #4F46E5;
+    -fx-effect: dropshadow(gaussian, rgba(79, 70, 229, 0.2), 4, 0, 0, 0);
+}
+
+/* Error state for validation */
+.error {
+    -fx-border-color: #DC2626;
+}
+
+/* Disabled state styling */
+.button:disabled {
+    -fx-opacity: 0.6;
+    -fx-cursor: default;
+}
+
+.text-field:disabled {
+    -fx-opacity: 0.6;
+    -fx-background-color: #F3F4F6;
+}
+
+/* Tooltip styling */
+.tooltip {
+    -fx-background-color: #1F2937;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-padding: 8 12 8 12;
+    -fx-background-radius: 4;
+}
+
+.checkbox-group {
+    -fx-padding: 40;
+}

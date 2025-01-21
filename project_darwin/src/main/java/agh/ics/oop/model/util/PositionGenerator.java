@@ -6,6 +6,4 @@ import java.util.Random;
 public interface PositionGenerator extends Iterable<Vector2d>{
     public void initializePositions();
     public List<Vector2d> generatePositions();
-
-    boolean contains(Vector2d vector2d);
 }

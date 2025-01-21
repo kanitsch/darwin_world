@@ -62,12 +62,6 @@ public class EquatorPreferredGenerator implements PositionGenerator {
             return generatedPositions;
         }
 
-    @Override
-    public boolean contains(Vector2d vector2d) {
-        return false;
-        // ta metoda jest tu nie potrzebna, ale musi byc zachowany interfejs positiongenerator
-    }
-
     private Vector2d getRandomPosition(List<Vector2d> positions) {
             int size = positions.size();
             int idx = random.nextInt(size);

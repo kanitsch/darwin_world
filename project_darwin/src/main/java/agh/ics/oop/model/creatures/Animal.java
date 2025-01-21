@@ -82,9 +82,15 @@ public class Animal implements WorldElement {
         position = position.add(direction.toUnitVector());
     }
 
-    public void consume() {
-        energy += constants.getENERGY_FROM_PLANT();
-        eatenPlantsNumber++;
+    public void consume(boolean isLarge) {
+        if (isLarge) {
+            energy += 4*constants.getENERGY_FROM_PLANT();
+            eatenPlantsNumber++;
+        }
+        else {
+            energy += constants.getENERGY_FROM_PLANT();
+            eatenPlantsNumber++;
+        }
     }
 
     public void removeEnergy(int energyToRemove) {

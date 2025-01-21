@@ -90,6 +90,9 @@ public class WorldMapTest {
         map.growGrass();
         System.out.println(map);
         assertEquals(25,map.getTotalPlants());
+        map.growGrass();
+        System.out.println(map);
+        assertEquals(45,map.getTotalPlants());
     }
 
     @Test

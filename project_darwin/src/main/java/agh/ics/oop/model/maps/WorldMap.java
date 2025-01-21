@@ -54,14 +54,12 @@ public class WorldMap {
         for(Vector2d grassPosition : positionGenerator) {
             grass.put(grassPosition, new Grass(grassPosition));
         }
-        // nie generuje pozycji dla dorodnych plonów
     }
 
     public WorldElement objectAt(Vector2d position) {
         if (animals.get(position) != null) {
             if (!animals.get(position).isEmpty()) return animals.get(position).iterator().next();
         }
-
         return grass.get(position);
     }
 
@@ -77,7 +75,7 @@ public class WorldMap {
         }
     }
 
-    private boolean placeLargeGrass(Vector2d bottomLeftPosition, PositionGenerator positionGenerator) {
+    private boolean placeLargeGrass(Vector2d bottomLeftPosition, RandomPositionGenerator positionGenerator) {
         for (int dx = 0; dx <= 1; dx++) {
             for (int dy = 0; dy <= 1; dy++) {
                 if (grass.containsKey(new Vector2d(bottomLeftPosition.x + dx, bottomLeftPosition.y + dy))) {
@@ -139,7 +137,7 @@ public class WorldMap {
         for (Vector2d grassPosition : positionGenerator) {
 
             if (goodHarvest && random.nextDouble()<0.5 && isWithinGoodHarvestArea(grassPosition)) {
-                    if(placeLargeGrass(grassPosition,positionGenerator)) {
+                    if(placeLargeGrass(grassPosition,(RandomPositionGenerator)positionGenerator)) {
                         this.largeGrassCount++;
                     }
                     else {
@@ -212,11 +210,11 @@ public class WorldMap {
                                 .thenComparing(Animal::getChildrenNumber).reversed());
 
                     }
-                    candidates.get(0).consume();
+                    candidates.get(0).consume(true);
                     //trzeba to uwzględnić w animalu, że roślina ma więcej energii
                 }
                 else {
-                    animals.get(position).get(0).consume();
+                    animals.get(position).get(0).consume(false);
                 }
                 this.removeGrass(grass.get(position));
             }
@@ -281,7 +279,6 @@ public class WorldMap {
     public int getTotalPlants() {
         return grass.size()-3*largeGrassCount;
     }
-
 
     @Override
     public String toString() {

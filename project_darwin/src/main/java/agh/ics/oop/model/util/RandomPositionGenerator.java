@@ -1,7 +1,6 @@
 package agh.ics.oop.model.util;
 
 import agh.ics.oop.model.creatures.Grass;
-import agh.ics.oop.model.creatures.LargeGrass;
 import agh.ics.oop.model.info.Constants;
 import agh.ics.oop.model.info.ConstantsList;
 
@@ -35,9 +34,9 @@ public class RandomPositionGenerator implements PositionGenerator {
                     positions.add(position);
                 }
             }
-
         }
     }
+
     @Override
     public List<Vector2d> generatePositions() {
             List<Vector2d> generatedPositions = new ArrayList<>();
@@ -50,11 +49,11 @@ public class RandomPositionGenerator implements PositionGenerator {
             return generatedPositions;
     }
 
-        private Vector2d getRandomPosition(List<Vector2d> positions) {
-                int size = positions.size();
-                int idx = random.nextInt(size);
-                return positions.remove(idx);
-            }
+    private Vector2d getRandomPosition(List<Vector2d> positions) {
+        int size = positions.size();
+        int idx = random.nextInt(size);
+        return positions.remove(idx);
+    }
 
     public boolean contains(Vector2d position) {
         return this.plants.contains(position);

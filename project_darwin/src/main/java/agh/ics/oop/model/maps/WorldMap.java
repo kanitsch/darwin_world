@@ -137,15 +137,15 @@ public class WorldMap {
         for (Vector2d grassPosition : positionGenerator) {
 
             if (goodHarvest && random.nextDouble()<0.5 && isWithinGoodHarvestArea(grassPosition)) {
-                if(placeLargeGrass(grassPosition,(RandomPositionGenerator)positionGenerator)) {
-                    this.largeGrassCount++;
-                }
-                else {
-                    grass.put(grassPosition, new Grass(grassPosition));
-                }
+                    if(placeLargeGrass(grassPosition,(RandomPositionGenerator)positionGenerator)) {
+                        this.largeGrassCount++;
+                    }
+                    else {
+                        grass.put(grassPosition, new Grass(grassPosition));
+                    }
             }
             else {
-                grass.put(grassPosition, new Grass(grassPosition));
+            grass.put(grassPosition, new Grass(grassPosition));
             }
         }
     }
@@ -286,3 +286,4 @@ public class WorldMap {
         return map.draw(new Vector2d(0, 0), new Vector2d(mapWidth, mapHeight));
     }
 }
+

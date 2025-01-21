@@ -8,8 +8,8 @@ public class PositionIterator implements Iterator<Vector2d> {
 
     public PositionIterator(List<Vector2d> used){
         this.used =used;
-
     }
+
     @Override
     public boolean hasNext() {
         return !used.isEmpty();

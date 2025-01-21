@@ -1,3 +1,4 @@
+
 package agh.ics.oop.model.creatures;
 
 import agh.ics.oop.model.enums.MapDirection;
@@ -17,6 +18,7 @@ public class Animal implements WorldElement {
     private int childrenNumber = 0;
     private int eatenPlantsNumber = 0;
     private Genome genome;
+    private int age;
 
 
     public Animal(Vector2d position, int simulationId, int energy, Genome genome) {
@@ -27,6 +29,7 @@ public class Animal implements WorldElement {
         this.direction = MapDirection.values()[(int) (Math.random() * MapDirection.values().length)];
         this.energy = energy;
         this.genome = genome;
+        this.age = 0;
     }
 
 
@@ -58,6 +61,8 @@ public class Animal implements WorldElement {
 
     public int getEatenPlantsNumber() {return this.eatenPlantsNumber;}
 
+    public int getAge() {return this.age;}
+
     public void setPosition(Vector2d position) {this.position = position;}
 
     public String toString() {
@@ -68,15 +73,25 @@ public class Animal implements WorldElement {
         return this.position.equals(position);
     }
 
-    public void move() {
-        //TODO: dodać wychodzenie za brzegi mapy i teleportowanie na drugą stronę
-        direction = direction.rotate(genome.getCurrentGene());
-        position.add(direction.toUnitVector());
+    public void incrementAge(){
+        this.age++;
     }
 
-    public void consume() {
-        energy += constants.getENERGY_FROM_PLANT();
-        eatenPlantsNumber++;
+
+    public void move() {
+        direction = direction.rotate(genome.getCurrentGene());
+        position = position.add(direction.toUnitVector());
+    }
+
+    public void consume(boolean isLarge) {
+        if (isLarge) {
+            energy += 4*constants.getENERGY_FROM_PLANT();
+            eatenPlantsNumber++;
+        }
+        else {
+            energy += constants.getENERGY_FROM_PLANT();
+            eatenPlantsNumber++;
+        }
     }
 
     public void removeEnergy(int energyToRemove) {
@@ -100,6 +115,7 @@ public class Animal implements WorldElement {
         return new Animal(father.position,father.getSimulationId(),energy,genome);
     }
 
+    //working on this
     public Animal breed (Animal partner) {
         if (energy < constants.getMINIMAL_BREEDING_ENERGY()
                 || partner.energy < constants.getMINIMAL_BREEDING_ENERGY())

@@ -18,10 +18,7 @@ public class Main {
             System.out.println("i = " + i);
         }
 
-//        Constants constants = new Constants(0, 0, 0, 5, 5, false, false, 0, 5, 0, 0, 0, 0, 0, 0);
-//        ConstantsList.addToConstantsList(0, constants);
-//        WorldMap map = new WorldMap(0);
-//        System.out.println(map);
+
     }
 
 }

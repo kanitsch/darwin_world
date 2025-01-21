@@ -1,19 +1,30 @@
 package agh.ics.oop;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class SimulationEngine {
-    private List<Simulation> simulations;
-    private List<Thread> threads;
-    //czy mozna w trakcie dodawac nowe symulacje?
+    private final List<Simulation> simulations;
+    private final List<Thread> threads;
 
     public SimulationEngine(List<Simulation> simulations) {
-        this.simulations = simulations;
-        this.threads = new ArrayList<>();
+        this.simulations = new CopyOnWriteArrayList<>(simulations);
+        this.threads = new CopyOnWriteArrayList<>();
     }
-    public void runAsync(){
-        for (Simulation simulation : simulations) {
+
+    public void runAsync() {
+        synchronized (simulations) {
+            for (Simulation simulation : simulations) {
+                Thread thread = new Thread(simulation);
+                thread.start();
+                threads.add(thread);
+            }
+        }
+    }
+
+    public void addSimulation(Simulation simulation) {
+        synchronized (simulations) {
+            simulations.add(simulation);
             Thread thread = new Thread(simulation);
             thread.start();
             threads.add(thread);
@@ -37,3 +48,4 @@ public class SimulationEngine {
         }
     }
 }
+

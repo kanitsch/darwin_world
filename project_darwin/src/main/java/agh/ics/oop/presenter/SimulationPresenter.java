@@ -193,9 +193,17 @@ public class SimulationPresenter implements ChangeListener {
     public void exportCsvStatistics(WorldMap worldMap) {
         String projectPath = System.getProperty("user.dir");
         String filename = "World_Statistics_" + worldMap.getSimulationId() + ".csv";
+        var path = new File( "src/main/resources/statistics/");
+        if (!path.exists()) {
+            if (!path.mkdirs()) {
+                return;
+            }
+        }
         String filePath = projectPath + "/src/main/resources/statistics/" + filename;
 
+
         File csvFile = new File(filePath);
+
         boolean fileExist = csvFile.exists();
 
         try (PrintWriter writer = new PrintWriter(new FileWriter(filePath, true))) {
@@ -243,6 +251,11 @@ public class SimulationPresenter implements ChangeListener {
             animalStatisticsPlants.setText("Plants Eaten: " + markedAnimal.getEatenPlantsNumber());
             animalStatisticsGenotype.setText("Genotype: " + Arrays.toString(markedAnimal.getGenome().getGeneList()));
             animalStatisticsLifeDays.setText("Age: " + markedAnimal.getAge());
+
+            if (markedAnimal != null && markedAnimal.getDateOfDeath()>=0) {
+                setMarkedAnimal(null); // Clear the mark if the animal is dead
+            }
+
         }
         else {
             animalStatisticsChildren.setText("Waiting for mark");

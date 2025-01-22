@@ -64,6 +64,7 @@ public class Animal implements WorldElement {
     public int getAge() {return this.age;}
 
     public void setPosition(Vector2d position) {this.position = position;}
+    public void setDirection(MapDirection direction) {this.direction = direction;}
 
     public String toString() {
         return this.direction.toString();
@@ -81,6 +82,19 @@ public class Animal implements WorldElement {
     public void move() {
         direction = direction.rotate(genome.getCurrentGene());
         position = position.add(direction.toUnitVector());
+        if (position.getX()>constants.getMAP_WIDTH()){
+            position=new Vector2d(0, position.getY());
+        }
+        if (position.getY()>constants.getMAP_HEIGHT()){
+            position=new Vector2d(position.getX(), 0);
+        }
+        if (position.getX()<0){
+            position=new Vector2d(constants.getMAP_WIDTH(), position.getY());
+        }
+        if (position.getY()<0){
+            position=new Vector2d( position.getX(),constants.getMAP_HEIGHT());
+        }
+        removeEnergy(constants.getENERGY_LOST_PER_DAY());
     }
 
     public void consume(boolean isLarge) {

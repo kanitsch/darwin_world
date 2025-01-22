@@ -6,10 +6,10 @@ public enum MapDirection {
     N,
     NE,
     E,
-    W,
-    S,
     SE,
+    S,
     SW,
+    W,
     NW;
 
     public String toString(){

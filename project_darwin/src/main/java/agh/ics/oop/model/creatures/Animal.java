@@ -64,6 +64,7 @@ public class Animal implements WorldElement {
     public int getAge() {return this.age;}
 
     public void setPosition(Vector2d position) {this.position = position;}
+    public void setDirection(MapDirection direction) {this.direction = direction;}
 
     public String toString() {
         return this.direction.toString();

@@ -121,7 +121,7 @@ public class MenuPresenter extends BasePresenter {
                 completeRandom.isSelected(),
                 numberOfAnimals.getValue(),
                 numberOfPlants.getValue(),
-                geneomeLength.getValue(),
+//                geneomeLength.getValue(),
                 minMutations.getValue(),
                 maxMutations.getValue(),
                 plantsPerDay.getValue(),

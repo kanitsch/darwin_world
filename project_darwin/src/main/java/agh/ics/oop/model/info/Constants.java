@@ -10,7 +10,7 @@ public class Constants {
     private boolean COMPLETE_RANDOM;
     private int NUMBER_OF_ANIMALS;
     private int NUMBER_OF_PLANTS;
-    private int GENOME_LENGTH;
+//    private int GENOME_LENGTH;
     private int MIN_MUTATIONS;
     private int MAX_MUTATIONS;
     private int PLANTS_PER_DAY;
@@ -34,7 +34,7 @@ public class Constants {
             boolean completeRandom,
             int numberOfAnimals,
             int numberOfPlants,
-            int genomeLength,
+//            int genomeLength,
             int minMutations,
             int maxMutations,
             int plantsPerDay,
@@ -52,7 +52,7 @@ public class Constants {
         COMPLETE_RANDOM = completeRandom;
         NUMBER_OF_ANIMALS = numberOfAnimals;
         NUMBER_OF_PLANTS = numberOfPlants;
-        GENOME_LENGTH = genomeLength;
+//        GENOME_LENGTH = genomeLength;
         MIN_MUTATIONS = minMutations;
         MAX_MUTATIONS = maxMutations;
         PLANTS_PER_DAY = plantsPerDay;
@@ -91,9 +91,9 @@ public class Constants {
     public int getNUMBER_OF_PLANTS () {
         return NUMBER_OF_PLANTS;
     }
-    public int getGENOME_LENGTH () {
-        return GENOME_LENGTH;
-    }
+//    public int getGENOME_LENGTH () {
+//        return GENOME_LENGTH;
+//    }
     public int getMIN_MUTATIONS () {
         return MIN_MUTATIONS;
     }

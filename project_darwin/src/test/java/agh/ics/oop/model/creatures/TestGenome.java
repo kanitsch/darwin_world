@@ -28,7 +28,6 @@ public class TestGenome {
                 0,
                 0,
                 0,
-                0,
                 0
         );
         ConstantsList.addToConstantsList(1, constants);
@@ -52,7 +51,6 @@ public class TestGenome {
                 0,
                 false,
                 false,
-                0,
                 0,
                 0,
                 0,
@@ -87,7 +85,6 @@ public class TestGenome {
                 false,
                 0,
                 0,
-                10,
                 1,
                 3,
                 0,
@@ -110,7 +107,6 @@ public class TestGenome {
                 0,
                 false,
                 false,
-                0,
                 0,
                 0,
                 0,
@@ -142,7 +138,6 @@ public class TestGenome {
                 0,
                 false,
                 false,
-                0,
                 0,
                 0,
                 0,

@@ -45,7 +45,7 @@ public class World {
                 COMPLETE_RANDOM,
                 NUMBER_OF_ANIMALS,
                 NUMBER_OF_PLANTS,
-                GENOME_LENGTH,
+//                GENOME_LENGTH,
                 MIN_MUTATIONS,
                 MAX_MUTATIONS,
                 PLANTS_PER_DAY,

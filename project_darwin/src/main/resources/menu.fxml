@@ -37,8 +37,8 @@
     <Label text="Number of Plants" GridPane.columnIndex="0" GridPane.rowIndex="8"/>
     <IntegerField fx:id="numberOfPlants" GridPane.columnIndex="1" GridPane.rowIndex="8"/>
 
-    <Label text="Genome Length" GridPane.columnIndex="0" GridPane.rowIndex="9"/>
-    <IntegerField fx:id="geneomeLength" GridPane.columnIndex="1" GridPane.rowIndex="9"/>
+<!--    <Label text="Genome Length" GridPane.columnIndex="0" GridPane.rowIndex="9"/>-->
+<!--    <IntegerField fx:id="geneomeLength" GridPane.columnIndex="1" GridPane.rowIndex="9"/>-->
 
     <Label text="Min Mutations" GridPane.columnIndex="0" GridPane.rowIndex="10"/>
     <IntegerField fx:id="minMutations" GridPane.columnIndex="1" GridPane.rowIndex="10"/>

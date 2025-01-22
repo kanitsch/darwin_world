@@ -107,14 +107,20 @@ public class AnimalsList {
         table.add(createStringItem("Poziom energii"), 2, 0);
         table.add(createStringItem("Wiek"), 3, 0);
         table.add(createStringItem("Liczba dzieci"), 4, 0);
-        table.add(createStringItem("ID"), 5, 0);
+        table.add(createStringItem("Liczba wszystkich potomków"),5,0);
+        table.add(createStringItem("Data śmierci"), 6, 0);
+        table.add(createStringItem("ID"), 7, 0);
         for (int i = 1; i <= listOfAnimals.size(); i++){
             table.add(createCheckBoxItem(listOfAnimals.get(i-1), markedAnimal),0,i);
             table.add(createStringItem(listOfAnimals.get(i-1).getDirection().toString()),1,i);
             table.add(createIntegerItem(listOfAnimals.get(i-1).getEnergy()),2,i);
             table.add(createIntegerItem(listOfAnimals.get(i-1).getAge()),3,i);
             table.add(createIntegerItem(listOfAnimals.get(i-1).getChildrenNumber()),4,i);
-            table.add(createUUIDItem(listOfAnimals.get(i-1).getId()),5,i);
+            table.add(createIntegerItem(listOfAnimals.get(i-1).getNumberOfDescendants()),5,i);
+            table.add(createStringItem(listOfAnimals.get(i - 1).getDateOfDeath() != -1
+                    ? String.valueOf(listOfAnimals.get(i - 1).getDateOfDeath())
+                    : "Jeszcze żyje"),6,i);
+            table.add(createUUIDItem(listOfAnimals.get(i-1).getId()),7,i);
         }
     }
 }

@@ -128,5 +128,14 @@ public class WorldMapTest {
         assertEquals(7,animal1.getEnergy());
     }
 
+    @Test
+    public void freeFields(){
+        Constants constants = new Constants(0, 0, 2, 3, 3, true, false, 0, 15,  0, 0, 3, 0, 0,0);
+        ConstantsList.addToConstantsList(0, constants);
+        WorldMap map = new WorldMap(0);
+        assertEquals(1,map.getFreeFields());
+    }
+
+
   
 }

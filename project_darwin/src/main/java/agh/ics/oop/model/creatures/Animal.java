@@ -19,6 +19,8 @@ public class Animal implements WorldElement {
     private int eatenPlantsNumber = 0;
     private Genome genome;
     private int age;
+    private int dateOfDeath=-1;
+    private List<Animal> descendants=new ArrayList<Animal>();
 
 
     public Animal(Vector2d position, int simulationId, int energy, Genome genome) {
@@ -74,6 +76,14 @@ public class Animal implements WorldElement {
         return this.position.equals(position);
     }
 
+    public int getDateOfDeath() {return this.dateOfDeath;}
+
+    public void setDateOfDeath(int date) {this.dateOfDeath = date;}
+
+    public List<Animal> getDescendants() {
+        return descendants;
+    }
+
     public void incrementAge(){
         this.age++;
     }
@@ -81,18 +91,17 @@ public class Animal implements WorldElement {
 
     public void move() {
         direction = direction.rotate(genome.getCurrentGene());
-        position = position.add(direction.toUnitVector());
-        if (position.getX()>constants.getMAP_WIDTH()){
-            position=new Vector2d(0, position.getY());
+        if (position.add(direction.toUnitVector()).getY()<=constants.getMAP_HEIGHT() && position.add(direction.toUnitVector()).getY() >=0) {
+            position = position.add(direction.toUnitVector());
+            if (position.getX()>constants.getMAP_WIDTH()){
+                position=new Vector2d(0, position.getY());
+            }
+            if (position.getX()<0){
+                position=new Vector2d(constants.getMAP_WIDTH(), position.getY());
+            }
         }
-        if (position.getY()>constants.getMAP_HEIGHT()){
-            position=new Vector2d(position.getX(), 0);
-        }
-        if (position.getX()<0){
-            position=new Vector2d(constants.getMAP_WIDTH(), position.getY());
-        }
-        if (position.getY()<0){
-            position=new Vector2d( position.getX(),constants.getMAP_HEIGHT());
+        else {
+            setDirection(direction.rotate(4));
         }
         removeEnergy(constants.getENERGY_LOST_PER_DAY());
     }
@@ -115,9 +124,11 @@ public class Animal implements WorldElement {
     public static Animal startingAnimal (int simulationId) {
         Constants constants = ConstantsList.getConstants(simulationId);
         Genome genome = Genome.startingAnimalGenome(simulationId);
-        Vector2d position = new Vector2d(2,2);
+        Random rand = new Random();
+        int x=rand.nextInt(constants.getMAP_WIDTH()+1);
+        int y=rand.nextInt(constants.getMAP_HEIGHT()+1);
+        Vector2d position = new Vector2d(x,y);
         int energy = constants.getSTARTING_ANIMAL_ENERGY();
-
         return new Animal(position, simulationId,energy,genome);
     }
 
@@ -140,8 +151,41 @@ public class Animal implements WorldElement {
         this.removeEnergy(constants.getENERGY_LOST_FOR_REPRODUCTION());
         partner.removeEnergy(constants.getENERGY_LOST_FOR_REPRODUCTION());
         this.childrenNumber++;
+        this.descendants.add(offspring);
         partner.childrenNumber++;
+        partner.descendants.add(offspring);
 
         return offspring;
     }
+
+    public List<Animal> getDescendantsList(Animal startingVertex){
+        Stack<Animal> stack = new Stack<>();
+        HashSet<Animal> visited = new HashSet<>();
+        List<Animal> descendants = new ArrayList<>();
+        stack.push(startingVertex);
+        visited.add(startingVertex);
+        while (!stack.isEmpty()){
+            Animal checked = stack.pop();
+            List<Animal> children = checked.getDescendants();
+            for (Animal child : children){
+                if (!visited.contains(child)){
+                    stack.push(child);
+                    visited.add(child);
+                    descendants.add(child);
+                }
+            }
+        }
+        return descendants;
+    }
+
+    public int getNumberOfDescendants() {
+        descendants=getDescendantsList(this);
+        return descendants.size();
+    }
+
+
+
+
+
+
 }

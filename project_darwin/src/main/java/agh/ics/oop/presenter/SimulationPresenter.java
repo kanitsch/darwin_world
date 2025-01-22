@@ -62,21 +62,25 @@ public class SimulationPresenter implements ChangeListener {
     @FXML
     private VBox averageChildrenNumberVBox = new VBox();
     @FXML
-    private Label  genotype0 = new Label();
+    private Label mostPopularGenotypeLabel=new Label();
     @FXML
-    private Label  genotype1 = new Label();
-    @FXML
-    private Label  genotype2 = new Label();
-    @FXML
-    private Label  genotype3 = new Label();
-    @FXML
-    private Label  genotype4 = new Label();
-    @FXML
-    private Label  genotype5 = new Label();
-    @FXML
-    private Label  genotype6 = new Label();
-    @FXML
-    private Label  genotype7 = new Label();
+    private Label getNumberOfEmptyFieldsLabel = new Label();
+//    @FXML
+//    private Label  genotype0 = new Label();
+//    @FXML
+//    private Label  genotype1 = new Label();
+//    @FXML
+//    private Label  genotype2 = new Label();
+//    @FXML
+//    private Label  genotype3 = new Label();
+//    @FXML
+//    private Label  genotype4 = new Label();
+//    @FXML
+//    private Label  genotype5 = new Label();
+//    @FXML
+//    private Label  genotype6 = new Label();
+//    @FXML
+//    private Label  genotype7 = new Label();
     static final int CELL_WIDTH = 40;
     static final int CELL_HEIGHT = 40;
     private Simulation simulation;
@@ -133,7 +137,7 @@ public class SimulationPresenter implements ChangeListener {
         System.out.println("Stats Changed");
         numberOfAnimalsLabel.setText("Liczba zyjacyh zwierzat: " + worldMap.getTotalAnimals());
         numberOfPlantsLabel.setText("Aktualna liczba roslin: " + worldMap.getTotalPlants());
-        //numberOfEmptyFieldsLabel.setText("Aktualna liczba pustych pol: " + worldMap.getNumberOfEmptyFields());
+        numberOfEmptyFieldsLabel.setText("Aktualna liczba pustych pol: " + worldMap.getFreeFields());
         averageEnergyLabel.setText("Sredni poziom energii dla zyjacych zwierzat: " + worldMap.getAverageEnergy());
         averageEnergyVBox.setVisible(worldMap.getAverageEnergy() != -1);
         averageEnergyVBox.setManaged(worldMap.getAverageEnergy() != -1);
@@ -143,14 +147,16 @@ public class SimulationPresenter implements ChangeListener {
         averageChildrenNumberLabel.setText("Srednia liczba dzieci dla zyjacych zwierzat: " + worldMap.getAverageNumberOfChildren());
         averageChildrenNumberVBox.setVisible(worldMap.getAverageNumberOfChildren() != -1);
         averageChildrenNumberVBox.setManaged(worldMap.getAverageNumberOfChildren() != -1);
-        genotype0.setText("Genotyp 0: " + worldMap.getNumberOfEachGenotype()[0]);
-        genotype1.setText("Genotyp 1: " + worldMap.getNumberOfEachGenotype()[1]);
-        genotype2.setText("Genotyp 2: " + worldMap.getNumberOfEachGenotype()[2]);
-        genotype3.setText("Genotyp 3: " + worldMap.getNumberOfEachGenotype()[3]);
-        genotype4.setText("Genotyp 4: " + worldMap.getNumberOfEachGenotype()[4]);
-        genotype5.setText("Genotyp 5: " + worldMap.getNumberOfEachGenotype()[5]);
-        genotype6.setText("Genotyp 6: " + worldMap.getNumberOfEachGenotype()[6]);
-        genotype7.setText("Genotyp 7: " + worldMap.getNumberOfEachGenotype()[7]);
+        getNumberOfEmptyFieldsLabel.setText("Liczba wolnych pol: " + worldMap.getFreeFields());
+        mostPopularGenotypeLabel.setText("Najpopularniejszy genotyp: "+worldMap.getMostPopularGenotype());
+//        genotype0.setText("Genotyp 0: " + worldMap.getNumberOfEachGenotype()[0]);
+//        genotype1.setText("Genotyp 1: " + worldMap.getNumberOfEachGenotype()[1]);
+//        genotype2.setText("Genotyp 2: " + worldMap.getNumberOfEachGenotype()[2]);
+//        genotype3.setText("Genotyp 3: " + worldMap.getNumberOfEachGenotype()[3]);
+//        genotype4.setText("Genotyp 4: " + worldMap.getNumberOfEachGenotype()[4]);
+//        genotype5.setText("Genotyp 5: " + worldMap.getNumberOfEachGenotype()[5]);
+//        genotype6.setText("Genotyp 6: " + worldMap.getNumberOfEachGenotype()[6]);
+//        genotype7.setText("Genotyp 7: " + worldMap.getNumberOfEachGenotype()[7]);
 
     }
 
@@ -274,7 +280,7 @@ public class SimulationPresenter implements ChangeListener {
         for(int i = 0; i<= constants.getMAP_HEIGHT(); i++){
             for(int j = 0; j <= constants.getMAP_WIDTH(); j++){
                 Vector2d vec = new Vector2d(j,i);
-                if(worldMap.objectAt(vec) != null && worldMap.objectAt(vec).equals("*")){
+                if(worldMap.objectAt(vec) != null && (worldMap.objectAt(vec).equals("*") ||worldMap.objectAt(vec).equals("#")) ){
                     mapGrid.add(createGridItem(worldMap.objectAt(vec).toString(), vec),j+1,gridHeight - i - 1);
                 }
                 else if (worldMap.objectAt(vec) != null) {

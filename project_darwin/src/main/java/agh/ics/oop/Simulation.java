@@ -16,7 +16,6 @@ public class Simulation implements Runnable {
     private final int sleepTime;
     private boolean stopped = false;
     private boolean ended = false;
-    private int day=0;
 
     public Simulation(int simulationId, int sleepTime) {
         Constants constants= ConstantsList.getConstants(simulationId);
@@ -24,9 +23,7 @@ public class Simulation implements Runnable {
         this.sleepTime = sleepTime;
         Random rand = new Random();
         for (int i=0; i<constants.getNUMBER_OF_ANIMALS();i++){
-            int x=rand.nextInt(constants.getMAP_WIDTH()+1);
-            int y=rand.nextInt(constants.getMAP_HEIGHT()+1);
-            worldMap.place(new Animal(new Vector2d(x,y),simulationId,constants.getSTARTING_ANIMAL_ENERGY(),new Genome(simulationId)));
+            worldMap.place(Animal.startingAnimal(simulationId));
         }
 
         worldMap.addObserver(new ConsoleMapDisplay());
@@ -44,7 +41,6 @@ public class Simulation implements Runnable {
     public void run() {
         System.out.println(worldMap);
         sleep(sleepTime);
-        day++;
         while (worldMap.getTotalAnimals()>0){
             if (ended){
                 return;
@@ -76,7 +72,7 @@ public class Simulation implements Runnable {
         return stopped;
     }
     public int getDay(){
-        return day;
+        return this.worldMap.getDay();
     }
     public WorldMap getMap(){
         return worldMap;

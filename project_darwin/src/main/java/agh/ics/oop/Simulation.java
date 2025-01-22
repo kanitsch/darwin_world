@@ -53,6 +53,8 @@ public class Simulation implements Runnable {
                 worldMap.animalsEat();
                 worldMap.animalsBreed();
                 worldMap.growGrass();
+//                System.out.println(worldMap.getTotalAnimals());
+                System.out.println(worldMap);
                 sleep(sleepTime);
             }
         }

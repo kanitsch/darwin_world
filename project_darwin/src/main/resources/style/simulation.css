@@ -1,0 +1,70 @@
+
+.game-root {
+    -fx-alignment: center;
+    -fx-background-color:
+            linear-gradient(from 0% 0% to 100% 100%, #E0FFD6, #D2B48C),
+            linear-gradient(from 0% 100% to 100% 0%, #D2B48C, #E0FFD6);
+    -fx-background-insets: 0, 0, 1, 1;
+}
+
+.game-board {
+    -fx-width: 1200px;
+    -fx-height: 900px;
+    -fx-border-width: 3px;
+}
+
+.game-statistics {
+    -fx-width: 400px;
+    -fx-height: 900px;
+}
+
+.animal-statistic {
+    -fx-font-size: 9px;
+    -fx-font-weight: bold;
+    -fx-padding: 3px 10px;
+}
+
+.label-default {
+    -fx-font-size: 9px;
+    -fx-font-weight: bold;
+    -fx-padding: 3px 10px;
+}
+
+.button {
+    -fx-font-size: 9px;
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 10px 20px;
+    -fx-margin: 10px;
+}
+
+.button:hover {
+    -fx-background-color: #45a049;
+}
+
+.button-red {
+    -fx-background-color: #e74c3c;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 10px 20px;
+    -fx-margin: 10px;
+}
+
+.button-red:hover {
+    -fx-background-color: #c0392b;
+}
+
+.header-label {
+    -fx-font-size: 19px;
+    -fx-font-weight: bold;
+    -fx-text-fill: black;
+    -fx-padding: 5px;
+}
+
+.animal-statistic-header {
+    -fx-font-size: 19px;
+    -fx-font-weight: bold;
+    -fx-text-fill: black;
+    -fx-padding: 5px;
+}

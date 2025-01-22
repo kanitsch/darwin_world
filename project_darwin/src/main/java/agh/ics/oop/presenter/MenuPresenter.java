@@ -1,5 +1,6 @@
 package agh.ics.oop.presenter;
 
+import agh.ics.oop.Simulation;
 import agh.ics.oop.SimulationApp;
 import agh.ics.oop.model.info.Constants;
 import agh.ics.oop.model.info.ConstantsList;
@@ -10,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -75,9 +77,8 @@ public class MenuPresenter extends BasePresenter {
     private void initialize() throws Exception {
         createGame.setOnAction(event -> {
             try {
-                setUpConstants(simulationId.getAndIncrement());
-                isValidData();
-                //createNewGame();
+                var id = simulationId.getAndIncrement();
+                createNewGame(id);
             } catch (Exception e) {
                 showAlert("Error", "Invalid data in game parameters", "Cannot start the Darwin World", Alert.AlertType.ERROR);
             }
@@ -276,34 +277,34 @@ public class MenuPresenter extends BasePresenter {
 
     }
 
-    private void createNewGame() throws Exception {
+    private void createNewGame(int id) throws Exception {
+        if(!isValidData()) {
+            System.out.println("InvalidData");
+            return;}
+
         FXMLLoader loader = new FXMLLoader();
         Stage stage = new Stage();
 
-        loader.setLocation(getClass().getClassLoader().getResource("game.fxml"));
-        GridPane view = loader.load();
+
+        loader.setLocation(getClass().getClassLoader().getResource("simulation.fxml"));
+        BorderPane view = loader.load();
         SimulationPresenter presenter = loader.getController();
-        //presenter.setShouldExportStatistics(formExportStatistics.isSelected());
-        //presenter.prepare();
 
-        /*Simulation simulation = new Simulation(worldConfig, presenter);
-        ExtendedThread thread = new ExtendedThread(simulation);
-        thread.start();
+        loader.setController(presenter);
 
-        stage.setOnCloseRequest(event -> {
-            simulation.stopRunning();
-        });
+        setUpConstants(id);
+        //Simulation simulation = new Simulation(id,1);
 
-        presenter.setThread(thread);
-        */
+        presenter.setUp(id, app, stage);
+        presenter.run();
 
-        stage.setTitle("Darwin World - World " /* + simulation.getWorld().getId()*/);
+
+        stage.setTitle("Darwin World - World " + id);
         stage.setScene(new Scene(view));
         stage.setMaximized(true);
         stage.show();
+
     }
-
-
 
 
 }

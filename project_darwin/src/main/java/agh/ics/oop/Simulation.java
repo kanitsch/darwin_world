@@ -1,5 +1,6 @@
 package agh.ics.oop;
 
+import agh.ics.oop.model.ConsoleMapDisplay;
 import agh.ics.oop.model.creatures.Animal;
 import agh.ics.oop.model.creatures.Genome;
 import agh.ics.oop.model.info.Constants;
@@ -28,6 +29,7 @@ public class Simulation implements Runnable {
             worldMap.place(new Animal(new Vector2d(x,y),simulationId,constants.getSTARTING_ANIMAL_ENERGY(),new Genome(simulationId)));
         }
 
+        worldMap.addObserver(new ConsoleMapDisplay());
     }
 
     private void sleep(int sleepTime){
@@ -53,6 +55,8 @@ public class Simulation implements Runnable {
                 worldMap.animalsEat();
                 worldMap.animalsBreed();
                 worldMap.growGrass();
+                var day = getDay() - 1;
+                worldMap.atMapChanged("Day" + day + "passed");
                 sleep(sleepTime);
             }
         }

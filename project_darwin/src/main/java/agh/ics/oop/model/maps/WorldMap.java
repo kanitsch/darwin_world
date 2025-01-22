@@ -33,6 +33,7 @@ public class WorldMap {
     private final HashSet<UUID> descendants = new HashSet<>();
     private final Map<UUID, GraphVertex> familyTree = new HashMap<>();
     private CSVWriter csvWriter;
+    private int day=0;
 
 
     public WorldMap(int simulationId) {
@@ -129,6 +130,7 @@ public class WorldMap {
     }
 
     public boolean isWithinGoodHarvestArea(Vector2d grassPosition) {
+
         Constants constants = ConstantsList.getConstants(simulationId);
         if (constants.isGOOD_HARVEST())
         return grassPosition.getX()>=goodHarvestBottomLeft.getX() && grassPosition.getY()>=goodHarvestBottomLeft.getY() && grassPosition.getX()<goodHarvestBottomLeft.getX()+goodHarvestAreaWidth-1 && grassPosition.getY()<goodHarvestBottomLeft.getY()+goodHarvestAreaWidth-1;
@@ -138,6 +140,7 @@ public class WorldMap {
 
             return grassPosition.getY() >= equatorStart && grassPosition.getY() <= equatorEnd;
         }
+
     }
 
 
@@ -157,7 +160,7 @@ public class WorldMap {
 
         for (Vector2d grassPosition : positionGenerator) {
 
-            if (goodHarvest && random.nextDouble()<0.5 && isWithinGoodHarvestArea(grassPosition)) {
+            if (goodHarvest && random.nextDouble()<0.8 && isWithinGoodHarvestArea(grassPosition.add(new Vector2d(1,1))) && isWithinGoodHarvestArea(grassPosition)) {
                     if(placeLargeGrass(grassPosition,(RandomPositionGenerator)positionGenerator)) {
                         this.largeGrassCount++;
                     }
@@ -172,21 +175,38 @@ public class WorldMap {
     }
 
     public void removeDeadAnimals() {
-        for (Vector2d position : animals.keySet()) {
-            Iterator<Animal> iterator = animals.get(position).iterator();
+        List<Vector2d> emptyPositions = new ArrayList<>();
+        day++;
+
+        for (Vector2d position : new HashSet<>(animals.keySet())) {
+            List<Animal> animalList = animals.get(position);
+
+            if (animalList == null) continue;
+
+            Iterator<Animal> iterator = animalList.iterator();
             while (iterator.hasNext()) {
                 Animal animal = iterator.next();
                 if (animal.getEnergy() <= 0) {
+                    animal.setDateOfDeath(this.getDay());
                     iterator.remove();
                     totalDeadAnimals++;
-                    totalLifeSpan+=animal.getAge();
+                    totalLifeSpan += animal.getAge();
                     removeFromGenomeStats(animal);
                 } else {
                     animal.incrementAge();
                 }
             }
+
+            if (animalList.isEmpty()) {
+                emptyPositions.add(position);
+            }
+        }
+
+        for (Vector2d position : emptyPositions) {
+            animals.remove(position);
         }
     }
+
 
     private void removeGrass(Grass plant) {
         if (plant instanceof LargeGrass) {
@@ -206,7 +226,9 @@ public class WorldMap {
         for (Vector2d position : animals.keySet()) {
             for (int i=0; i<animals.get(position).size()/2; i++) {
                 Animal offspring = animals.get(position).get(2*i).breed(animals.get(position).get(2*i+1));
-                this.place(offspring);
+                if (offspring!=null) {
+                    this.place(offspring);
+                }
             }
         }
     }
@@ -232,11 +254,14 @@ public class WorldMap {
                                 .thenComparing(Animal::getChildrenNumber).reversed());
 
                     }
-                    candidates.get(0).consume(true);
-                    //trzeba to uwzględnić w animalu, że roślina ma więcej energii
+                    if (candidates.size()>0) {
+                        candidates.get(0).consume(true);
+                    }
                 }
                 else {
-                    animals.get(position).get(0).consume(false);
+                    if (animals.get(position).size()>0) {
+                        animals.get(position).get(0).consume(false);
+                    }
                 }
                 this.removeGrass(grass.get(position));
             }
@@ -271,14 +296,14 @@ public class WorldMap {
             }
         }
         if (animalCount>0){
-            return (double) totalEnergy/animalCount;
+            return Math.round(((double) totalEnergy/animalCount)*100.0)/100.0;
         }
         return 0.0;
     }
 
     public double getAverageLifeSpan(){
         if (totalDeadAnimals>0) {
-            return (double) totalLifeSpan / totalDeadAnimals;
+            return Math.round(((double) totalLifeSpan / totalDeadAnimals)*100.0)/100.0;
         }
         return 0.0;
     }
@@ -293,7 +318,7 @@ public class WorldMap {
             }
         }
         if (animalCount>0){
-            return (double) totalChildren/animalCount;
+            return Math.round(((double) totalChildren/animalCount) * 100.0) / 100.0;
         }
         return 0.0;
     }
@@ -301,6 +326,35 @@ public class WorldMap {
     public int getTotalPlants() {
         return grass.size()-3*largeGrassCount;
     }
+
+    public int getFreeFields(){
+        return (mapHeight+1)*(mapWidth+1)-grass.size();
+    }
+
+    public String getMostPopularGenotype() {
+        Map<String, Integer> genotypeCount = new HashMap<>();
+        for (List<Animal> animalList : animals.values()) {
+            for (Animal animal : animalList) {
+                int[] geneList = animal.getGenome().getGeneList();
+                String genotypeKey = Arrays.toString(geneList);
+                genotypeCount.put(genotypeKey, genotypeCount.getOrDefault(genotypeKey, 0) + 1);
+            }
+        }
+        String mostPopularGenotype = "brak";
+        int maxCount = 0;
+        for (Map.Entry<String, Integer> entry : genotypeCount.entrySet()) {
+            if (entry.getValue() > maxCount) {
+                maxCount = entry.getValue();
+                mostPopularGenotype = entry.getKey();
+            }
+        }
+        return mostPopularGenotype;
+    }
+
+    public int getDay(){
+        return day;
+    }
+
 
     @Override
     public String toString() {
@@ -361,12 +415,12 @@ public class WorldMap {
         }
 
         this.markedAnimal = markedAnimal;
-        GraphVertex markedAnimalVertex = familyTree.get(markedAnimal.getId());
-        DFS dfs = new DFS();
-        List<GraphVertex> descendantsList = dfs.getDescendantsList(markedAnimalVertex);
-        for (GraphVertex vertex : descendantsList){
-            descendants.add(vertex.getId());
-        }
+//        GraphVertex markedAnimalVertex = familyTree.get(markedAnimal.getId());
+//        DFS dfs = new DFS();
+//        List<GraphVertex> descendantsList = dfs.getDescendantsList(markedAnimalVertex);
+//        for (GraphVertex vertex : descendantsList){
+//            descendants.add(vertex.getId());
+//        }
     }
 
     public void deleteMark(){
@@ -407,7 +461,7 @@ public class WorldMap {
         String[] data = new String[6];
         data[0] = String.valueOf(getTotalAnimals());
         data[1] = String.valueOf(totalLifeSpan);
-        //data[2] = String.valueOf(numberOfEmptyFields);
+        data[2] = String.valueOf(getFreeFields());
         data[3] = String.valueOf(getAverageEnergy());
         data[4] = String.valueOf(getAverageLifeSpan());
         data[5] = String.valueOf(getAverageNumberOfChildren() );

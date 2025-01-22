@@ -19,6 +19,7 @@ public class Genome {
 
     }
 
+
     public int getCurrentGene() {
         int currGeneIndex = (startGeneIndex + moveNumber) % constants.getNUMBER_OF_GENES();
         moveNumber++;

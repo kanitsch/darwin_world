@@ -75,9 +75,12 @@ fx:controller="agh.ics.oop.presenter.SimulationPresenter">
             <VBox fx:id="averageChildrenNumberVBox" alignment="CENTER_RIGHT" style="-fx-padding: 10;">
                 <Label fx:id="averageChildrenNumberLabel" />
             </VBox>
-            <VBox alignment="CENTER_RIGHT" style="-fx-padding: 10;">
-                <Label text="Liczba zyjacych zwierzat posiadajacy dany genotyp:"/>
+            <VBox alignment="CENTER_RIGHT" style="=-fx-padding: 10;">
+                <Label fx:id="mostPopularGenotypeLabel"/>
             </VBox>
+<!--            <VBox alignment="CENTER_RIGHT" style="-fx-padding: 10;">-->
+<!--                <Label text="Liczba zyjacych zwierzat posiadajacy dany genotyp:"/>-->
+<!--            </VBox>-->
             <HBox spacing="10" alignment="CENTER_RIGHT" style="-fx-padding: 10;">
                 <HBox style="-fx-spacing: 15; -fx-alignment: center">
                     <Label fx:id="genotype0" />

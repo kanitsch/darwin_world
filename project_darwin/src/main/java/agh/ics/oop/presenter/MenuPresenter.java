@@ -23,7 +23,6 @@ import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
-//TODO: ogarnac new game zapisywanie configu i import configu i wogle stestowanie czy to dziala
 public class MenuPresenter extends BasePresenter {
 
     @FXML
@@ -202,6 +201,12 @@ public class MenuPresenter extends BasePresenter {
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
 
         File resourcesDirectory = new File("src/main/resources/configs/");
+        if (!resourcesDirectory.exists()) {
+            if (!resourcesDirectory.mkdirs()) {
+                showError("Failed to create the configurations directory.");
+                return;
+            }
+        }
         fileChooser.setInitialDirectory(resourcesDirectory);
 
         Stage stage = (Stage) exportConfiguration.getScene().getWindow();

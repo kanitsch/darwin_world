@@ -1,15 +1,13 @@
 package agh.ics.oop.model.maps;
 
+import agh.ics.oop.model.ChangeListener;
 import agh.ics.oop.model.creatures.Animal;
 import agh.ics.oop.model.creatures.Grass;
 import agh.ics.oop.model.creatures.LargeGrass;
 import agh.ics.oop.model.creatures.WorldElement;
 import agh.ics.oop.model.info.Constants;
 import agh.ics.oop.model.info.ConstantsList;
-import agh.ics.oop.model.util.EquatorPreferredGenerator;
-import agh.ics.oop.model.util.PositionGenerator;
-import agh.ics.oop.model.util.RandomPositionGenerator;
-import agh.ics.oop.model.util.Vector2d;
+import agh.ics.oop.model.util.*;
 
 import java.util.*;
 
@@ -19,6 +17,8 @@ import static java.lang.Math.sqrt;
 public class WorldMap {
     private final Map<Vector2d, List<Animal>> animals = new HashMap<>();
     private final Map<Vector2d, Grass> grass;
+    protected final List<ChangeListener> observers = new ArrayList<>();
+
     private final int mapWidth;
     private final int mapHeight;
     private final int simulationId;
@@ -27,6 +27,12 @@ public class WorldMap {
     private final int goodHarvestAreaWidth;
     private final Vector2d goodHarvestBottomLeft;
     private int largeGrassCount = 0;
+    private final int[] numberOfEachGenotype = new int[8];
+    private final HashSet<Animal>[] commonGenotypeAnimals = new HashSet[8];
+    private Animal markedAnimal;
+    private final HashSet<UUID> descendants = new HashSet<>();
+    private final Map<UUID, GraphVertex> familyTree = new HashMap<>();
+    private CSVWriter csvWriter;
 
 
     public WorldMap(int simulationId) {
@@ -38,6 +44,10 @@ public class WorldMap {
         this.mapHeight= constants.getMAP_HEIGHT();
         boolean goodHarvest = constants.isGOOD_HARVEST();
         this.goodHarvestAreaWidth = min(min((int) sqrt(0.2*mapHeight*mapWidth),mapWidth),mapHeight);
+
+        for (int i = 0; i < 8; i++) {
+            this.commonGenotypeAnimals[i] = new HashSet<>();
+        }
 
         Random random = new Random();
         int xStart = random.nextInt(mapWidth - goodHarvestAreaWidth + 1);
@@ -56,11 +66,13 @@ public class WorldMap {
         }
     }
 
-    public WorldElement objectAt(Vector2d position) {
+    public String objectAt(Vector2d position) {
         if (animals.get(position) != null) {
-            if (!animals.get(position).isEmpty()) return animals.get(position).iterator().next();
+            if (animals.get(position).size() == 1) return animals.get(position).getFirst().toString();
+            else return "A";
         }
-        return grass.get(position);
+        if (grass.containsKey(position)) return grass.get(position).toString();
+        return null;
     }
 
 
@@ -73,6 +85,7 @@ public class WorldMap {
             animalList.add(animal);
             animals.put(animal.getPosition(), animalList);
         }
+        addToGenomeStats(animal);
     }
 
     private boolean placeLargeGrass(Vector2d bottomLeftPosition, RandomPositionGenerator positionGenerator) {
@@ -115,7 +128,7 @@ public class WorldMap {
         animals.get(newPosition).add(animal);
     }
 
-    private boolean isWithinGoodHarvestArea(Vector2d grassPosition) {
+    public boolean isWithinGoodHarvestArea(Vector2d grassPosition) {
         return grassPosition.getX()>=goodHarvestBottomLeft.getX() && grassPosition.getY()>=goodHarvestBottomLeft.getY() && grassPosition.getX()<goodHarvestBottomLeft.getX()+goodHarvestAreaWidth-1 && grassPosition.getY()<goodHarvestBottomLeft.getY()+goodHarvestAreaWidth-1;
     }
 
@@ -159,6 +172,7 @@ public class WorldMap {
                     iterator.remove();
                     totalDeadAnimals++;
                     totalLifeSpan+=animal.getAge();
+                    removeFromGenomeStats(animal);
                 } else {
                     animal.incrementAge();
                 }
@@ -284,6 +298,112 @@ public class WorldMap {
     public String toString() {
         MapVisualizer map = new MapVisualizer(this);
         return map.draw(new Vector2d(0, 0), new Vector2d(mapWidth, mapHeight));
+    }
+
+    public int getSimulationId() {
+        return simulationId;
+    }
+
+    public Map<Vector2d, List<Animal>> getAnimalPositions() {
+        return animals;
+    }
+
+    public void addObserver(ChangeListener observer) {
+        observers.add(observer);
+    }
+
+    public void removeObserver(ChangeListener observer) {
+        observers.remove(observer);
+    }
+
+    public void atMapChanged(String str) {
+        for(ChangeListener observer : observers) {
+            observer.mapChanged(this, str);
+        }
+    }
+
+    public Map<Vector2d, Grass> getGrass () {
+        return grass;
+    }
+
+    private void addToGenomeStats (Animal animal){
+        int[] genes = animal.getGenome().getGeneList();
+        for (int gene : genes){
+            // adding genes of this animal to statistics
+            numberOfEachGenotype[gene] +=1;
+            // assigning animal to its genotypes statistics
+            commonGenotypeAnimals[gene].add(animal); // if it's already there, no effects
+        }
+    }
+
+    private void removeFromGenomeStats (Animal animal){
+        int[] genes = animal.getGenome().getGeneList();
+        for (int gene : genes){
+            // removing genes of this animal from statistics
+            numberOfEachGenotype[gene] -=1;
+            // the dead animal is no longer counted
+            commonGenotypeAnimals[gene].remove(animal); // if it's not there, no effects
+        }
+    }
+
+    public void addMark (Animal markedAnimal){
+        // if previously marked animal is still marked, unmark it
+        if (!(markedAnimal == null)){
+            deleteMark();
+        }
+
+        this.markedAnimal = markedAnimal;
+        GraphVertex markedAnimalVertex = familyTree.get(markedAnimal.getId());
+        DFS dfs = new DFS();
+        List<GraphVertex> descendantsList = dfs.getDescendantsList(markedAnimalVertex);
+        for (GraphVertex vertex : descendantsList){
+            descendants.add(vertex.getId());
+        }
+    }
+
+    public void deleteMark(){
+        // clear stats for marked animal
+        this.markedAnimal = null;
+        descendants.clear();
+        //daysOfLiving = 0;
+        //dayOfDeath = 0;
+    }
+
+    public HashSet<Animal> getPopularGenotypeAnimals(){
+
+        int maxValue = numberOfEachGenotype[0];
+        List<Integer> indicesWithMaxValue = new ArrayList<>(List.of(0));
+        for (int i=1; i<8; i++){
+            int nextSize = numberOfEachGenotype[i];
+            if (nextSize > maxValue){
+                maxValue = nextSize;
+                indicesWithMaxValue.clear();
+                indicesWithMaxValue.add(i);
+            }
+            else if (nextSize == maxValue){
+                indicesWithMaxValue.add(i);
+            }
+        }
+        HashSet<Animal> popularGenotypeAnimals = new HashSet<>();
+        for (int genotype : indicesWithMaxValue){
+            popularGenotypeAnimals.addAll(commonGenotypeAnimals[genotype]);
+        }
+        return popularGenotypeAnimals;
+    }
+
+    public int[] getNumberOfEachGenotype() {
+        return numberOfEachGenotype;
+    }
+
+    private String[] getStatsForCSV() {
+        String[] data = new String[6];
+        data[0] = String.valueOf(getTotalAnimals());
+        data[1] = String.valueOf(totalLifeSpan);
+        //data[2] = String.valueOf(numberOfEmptyFields);
+        data[3] = String.valueOf(getAverageEnergy());
+        data[4] = String.valueOf(getAverageLifeSpan());
+        data[5] = String.valueOf(getAverageNumberOfChildren() );
+        return data;
     }
 }
 

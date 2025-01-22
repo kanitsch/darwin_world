@@ -245,7 +245,7 @@ public class SimulationPresenter implements ChangeListener {
 
         if (markedAnimal != null) {
             animalStatisticsChildren.setText("Animal Children: " + markedAnimal.getChildrenNumber());
-            animalStatisticsDescendants.setText("Animal Descendants: " + markedAnimal.getDescendants().size());
+            animalStatisticsDescendants.setText("Animal Descendants: " + markedAnimal.getNumberOfDescendants());
             animalStatisticsEnergy.setText("Animal Energy: " + markedAnimal.getEnergy());
             animalStatisticsDeathDay.setText("Animal Death day: " + markedAnimal.getDateOfDeath() );
             animalStatisticsPlants.setText("Plants Eaten: " + markedAnimal.getEatenPlantsNumber());

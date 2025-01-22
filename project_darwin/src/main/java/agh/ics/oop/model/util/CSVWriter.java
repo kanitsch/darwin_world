@@ -35,7 +35,7 @@ public class CSVWriter {
                 (animal != null ? animal.getEnergy() : "notMarked") + "," +
                 (animal != null ? animal.getEatenPlantsNumber() : "notMarked") + "," +
                 (animal != null ? animal.getChildrenNumber() : "notMarked") + "," +
-                (animal != null ? animal.getDescendants() : "notMarked") + "," +
+                (animal != null ? animal.getNumberOfDescendants() : "notMarked") + "," +
                 (animal != null ? animal.getAge() : "notMarked") + "," +
                 (animal != null ? animal.getDateOfDeath() : "notMarked")
         );

@@ -39,7 +39,7 @@ public class Simulation implements Runnable {
 
     @Override
     public void run() {
-        System.out.println(worldMap);
+//        System.out.println(worldMap);
         sleep(sleepTime);
         while (worldMap.getTotalAnimals()>0){
             if (ended){

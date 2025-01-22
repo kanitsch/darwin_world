@@ -1,41 +1,46 @@
 package agh.ics.oop.model.util;
 
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+
+
+import agh.ics.oop.Simulation;
+import agh.ics.oop.World;
+import agh.ics.oop.model.creatures.Animal;
+import agh.ics.oop.model.maps.WorldMap;
+
 import java.io.PrintWriter;
+import java.util.Arrays;
+import java.util.UUID;
 
 public class CSVWriter {
 
-    private final String filepath;
-
-    public CSVWriter(String filepath) {
-        this.filepath = filepath;
-        generateCSVBeggining();
+    public static void setStatisticsHeader(PrintWriter writer) {
+        writer.println("SimulationId,Day number,All animals,All plants,Average animals energy,Average animals age,Average animals children,AnimalID,Genotype,Energy,Eaten plants,Children,Descendants,Age,Date of death");
     }
 
-    public void write(String[] data) {
-        try(FileWriter writer = new FileWriter(filepath, true)) {
-            String toWrite = String.join(",", data) + "\n";
-            writer.write(toWrite);
-        } catch(IOException ignored) {}
+    public static void fillStatisticsDay(PrintWriter writer, WorldMap worldMap, Simulation simulation, Animal animal) {
+        writer.println(worldMap.getSimulationId() + "," +
+                // General statistics
+                simulation.getDay() + "," +
+                worldMap.getTotalAnimals() + "," +
+                worldMap.getTotalPlants() + "," +
+                //worldMap.getFreeFieldsCount() + "," +
+                worldMap.getAverageEnergy() + "," +
+                worldMap.getAverageLifeSpan() + "," +
+                worldMap.getAverageNumberOfChildren() + "," +
+
+                // Animal statistics
+                (animal != null ? animal.getId() : "notMarked") + "," +
+                (animal != null ? Arrays.toString(animal.getGenome().getGeneList()) : "notMarked") + "," +
+                (animal != null ? animal.getEnergy() : "notMarked") + "," +
+                (animal != null ? animal.getEatenPlantsNumber() : "notMarked") + "," +
+                (animal != null ? animal.getChildrenNumber() : "notMarked") + "," +
+                (animal != null ? animal.getChildrenNumber() : "notMarked") + "," +
+                (animal != null ? animal.getAge() : "notMarked") + "," +
+                (animal != null ? animal.getAge() : "notMarked")
+        );
     }
 
-    private void generateCSVBeggining()  {
-        if(filepath == null) return;
-        try {
-            PrintWriter writer = new PrintWriter(filepath);
-            String data = "";
-            data += "numberOfLiveAnimals" + ",";
-            data += "numberOfPlants" + ",";
-            data += "numberOfEmptyFields" + ",";
-            data += "AverageEnergy" + ",";
-            data += "AverageDaysOfLiving" + ",";
-            data += "AverageChildrenNumber" + "\n";
-            writer.print(data);
-            writer.close();
-
-        }
-        catch(FileNotFoundException ignored) {}
+    public static void setConfigurationHeader(PrintWriter writer) {
+        writer.println("Property,Value");
     }
 }

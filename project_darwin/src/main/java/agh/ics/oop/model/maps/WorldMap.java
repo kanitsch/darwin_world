@@ -431,27 +431,23 @@ public class WorldMap {
         //dayOfDeath = 0;
     }
 
-    public HashSet<Animal> getPopularGenotypeAnimals(){
-
-        int maxValue = numberOfEachGenotype[0];
-        List<Integer> indicesWithMaxValue = new ArrayList<>(List.of(0));
-        for (int i=1; i<8; i++){
-            int nextSize = numberOfEachGenotype[i];
-            if (nextSize > maxValue){
-                maxValue = nextSize;
-                indicesWithMaxValue.clear();
-                indicesWithMaxValue.add(i);
-            }
-            else if (nextSize == maxValue){
-                indicesWithMaxValue.add(i);
-            }
+    public HashSet<Animal> getPopularGenotypeAnimals() {
+        String mostPopularGenotype = getMostPopularGenotype(); // Get the most popular genotype
+        if (mostPopularGenotype.equals("brak")) {
+            return new HashSet<>(); // Return an empty set if no popular genotype is found
         }
         HashSet<Animal> popularGenotypeAnimals = new HashSet<>();
-        for (int genotype : indicesWithMaxValue){
-            popularGenotypeAnimals.addAll(commonGenotypeAnimals[genotype]);
+        for (List<Animal> animalList : animals.values()) {
+            for (Animal animal : animalList) {
+                String animalGenotype = Arrays.toString(animal.getGenome().getGeneList());
+                if (animalGenotype.equals(mostPopularGenotype)) {
+                    popularGenotypeAnimals.add(animal);
+                }
+            }
         }
         return popularGenotypeAnimals;
     }
+
 
     public int[] getNumberOfEachGenotype() {
         return numberOfEachGenotype;

@@ -14,16 +14,17 @@ import java.util.UUID;
 public class CSVWriter {
 
     public static void setStatisticsHeader(PrintWriter writer) {
-        writer.println("SimulationId,Day number,All animals,All plants,Average animals energy,Average animals age,Average animals children,AnimalID,Genotype,Energy,Eaten plants,Children,Descendants,Age,Date of death");
+        writer.println("SimulationId,Day number,All animals,All plants,Free Fields,Average animals energy,Average animals age,Average animals children,AnimalID,Genotype,Energy,Eaten plants,Children,Descendants,Age,Date of death");
     }
 
     public static void fillStatisticsDay(PrintWriter writer, WorldMap worldMap, Simulation simulation, Animal animal) {
-        writer.println(worldMap.getSimulationId() + "," +
+        writer.println(
                 // General statistics
+                worldMap.getSimulationId() + "," +
                 simulation.getDay() + "," +
                 worldMap.getTotalAnimals() + "," +
                 worldMap.getTotalPlants() + "," +
-                //worldMap.getFreeFieldsCount() + "," +
+                worldMap.getFreeFields() + "," +
                 worldMap.getAverageEnergy() + "," +
                 worldMap.getAverageLifeSpan() + "," +
                 worldMap.getAverageNumberOfChildren() + "," +
@@ -34,9 +35,9 @@ public class CSVWriter {
                 (animal != null ? animal.getEnergy() : "notMarked") + "," +
                 (animal != null ? animal.getEatenPlantsNumber() : "notMarked") + "," +
                 (animal != null ? animal.getChildrenNumber() : "notMarked") + "," +
-                (animal != null ? animal.getChildrenNumber() : "notMarked") + "," +
+                (animal != null ? animal.getDescendants() : "notMarked") + "," +
                 (animal != null ? animal.getAge() : "notMarked") + "," +
-                (animal != null ? animal.getAge() : "notMarked")
+                (animal != null ? animal.getDateOfDeath() : "notMarked")
         );
     }
 

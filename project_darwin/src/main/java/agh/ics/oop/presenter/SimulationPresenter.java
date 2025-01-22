@@ -88,6 +88,9 @@ public class SimulationPresenter implements ChangeListener {
     static final int CELL_WIDTH = 40;
     static final int CELL_HEIGHT = 40;
 
+    @FXML
+    private ScrollPane mapScrollPane;
+
     private Simulation simulation;
     private int simulationId;
     private Stage stage;
@@ -183,6 +186,8 @@ public class SimulationPresenter implements ChangeListener {
         if (shouldExportStatistics) {
             exportCsvStatistics(worldMap);
         };
+
+
     }
 
     public void exportCsvStatistics(WorldMap worldMap) {
@@ -232,9 +237,9 @@ public class SimulationPresenter implements ChangeListener {
 
         if (markedAnimal != null) {
             animalStatisticsChildren.setText("Animal Children: " + markedAnimal.getChildrenNumber());
-            animalStatisticsDescendants.setText("Animal Descendants: ");
+            animalStatisticsDescendants.setText("Animal Descendants: " + markedAnimal.getDescendants().size());
             animalStatisticsEnergy.setText("Animal Energy: " + markedAnimal.getEnergy());
-            animalStatisticsDeathDay.setText("Animal Death day: ");
+            animalStatisticsDeathDay.setText("Animal Death day: " + markedAnimal.getDateOfDeath() );
             animalStatisticsPlants.setText("Plants Eaten: " + markedAnimal.getEatenPlantsNumber());
             animalStatisticsGenotype.setText("Genotype: " + Arrays.toString(markedAnimal.getGenome().getGeneList()));
             animalStatisticsLifeDays.setText("Age: " + markedAnimal.getAge());
@@ -337,7 +342,6 @@ public class SimulationPresenter implements ChangeListener {
             else {
                 if (markedAnimal == animal){
                     setMarkedAnimal(null);
-
 
                 }
                 else {

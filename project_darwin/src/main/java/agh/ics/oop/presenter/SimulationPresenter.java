@@ -15,21 +15,27 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.Node;
+import javafx.scene.control.*;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+
+import static java.lang.Math.max;
+import static java.lang.Math.min;
 
 public class SimulationPresenter implements ChangeListener {
 
@@ -39,10 +45,7 @@ public class SimulationPresenter implements ChangeListener {
     private Button resumeButton;
     @FXML
     private Button pauseButton;
-    @FXML
-    private Button saveButton;
-    @FXML
-    private TextField saveFilePath;
+
     @FXML
     private Label numberOfPlantsLabel = new Label();
     @FXML
@@ -77,8 +80,11 @@ public class SimulationPresenter implements ChangeListener {
     private Label  genotype6 = new Label();
     @FXML
     private Label  genotype7 = new Label();
-    static final int CELL_WIDTH = 40;
-    static final int CELL_HEIGHT = 40;
+    @FXML
+    private ScrollPane mapScrollPane;
+
+    static int CELL_WIDTH = 40;
+    static int CELL_HEIGHT = 40;
     private Simulation simulation;
     private int simulationId;
     private Stage stage;
@@ -89,13 +95,40 @@ public class SimulationPresenter implements ChangeListener {
     private Animal markedAnimal;
     private final HashMap<Vector2d, Button> buttonMap = new HashMap<>();
     private HashSet<Animal> popularGeneAnimals;
+    private boolean shouldExportStatistics;
+    private int sleepTime;
+
+
+    @FXML
+    private Label animalStatisticsGenotype;
+    @FXML
+    private Label animalStatisticsEnergy;
+    @FXML
+    private Label animalStatisticsPlants;
+    @FXML
+    private Label animalStatisticsChildren;
+    @FXML
+    private Label animalStatisticsDescendants;
+    @FXML
+    private Label animalStatisticsLifeDays;
+    @FXML
+    private Label animalStatisticsDeathDay;
 
 
     public void run() throws InterruptedException {
         engine.runAsync();
+
     }
 
     public SimulationPresenter() {}
+
+    public void setShouldExportStatistics(boolean shouldExportStatistics) {
+        this.shouldExportStatistics = shouldExportStatistics;
+    }
+
+    public void setSleepTime(int sleepTime) {
+        this.sleepTime = sleepTime;
+    }
 
     public void setUp(int simulationId, SimulationApp app, Stage stage) {
         this.app = app;
@@ -103,21 +136,37 @@ public class SimulationPresenter implements ChangeListener {
         this.simulationId = simulationId;
         this.stage = stage;
         this.constants = ConstantsList.getConstants(simulationId);
+        double scaleX =  min(1, (double) 600 / (constants.getMAP_WIDTH() * CELL_WIDTH));
+        double scaleY =  min(1, (double) 600 / (constants.getMAP_HEIGHT() * CELL_HEIGHT));
+        double scale = min(scaleX, scaleY); // Use the smaller scale to fit both dimensions
 
-        this.simulation = new Simulation(this.simulationId, 1000);
+        mapGrid.setScaleX(scale);
+        mapGrid.setScaleY(scale);
+
+
+        this.simulation = new Simulation(this.simulationId, sleepTime);
         this.worldMap = simulation.getMap();
 
         this.engine = getSimulationEngine(simulation);
         Platform.runLater(() -> {
                 changeStats(worldMap);
                 drawMap(worldMap);
-
+            Platform.runLater(this::scrollToCenter);
         });
+
+        //Platform.runLater(this::scrollToCenter);
+
+
         resumeButton.setOnAction((e) -> simulation.resume());
         pauseButton.setOnAction((e) -> simulation.pause());
-        saveButton.setOnAction((e) -> this.setUpWriter());
 
         stage.addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, this::exitApplication);
+    }
+
+    private void scrollToCenter() {
+        // Set scroll position to 50% for both horizontal and vertical scrollbars
+        mapScrollPane.setHvalue(0.5);
+        mapScrollPane.setVvalue(0.5);
     }
 
     @Override
@@ -127,6 +176,30 @@ public class SimulationPresenter implements ChangeListener {
             changeStats(worldMap);
             drawMap(worldMap);
         });
+
+        if (shouldExportStatistics) {
+            exportCsvStatistics(worldMap);
+        };
+    }
+
+    public void exportCsvStatistics(WorldMap worldMap) {
+        String projectPath = System.getProperty("user.dir");
+        String filename = "World_Statistics_" + worldMap.getSimulationId() + ".csv";
+        String filePath = projectPath + "/src/main/resources/statistics/" + filename;
+
+        File csvFile = new File(filePath);
+        boolean fileExist = csvFile.exists();
+
+        try (PrintWriter writer = new PrintWriter(new FileWriter(filePath, true))) {
+            if (!fileExist) {
+                CSVWriter.setStatisticsHeader(writer);
+            }
+
+            CSVWriter.fillStatisticsDay(writer, worldMap, simulation,markedAnimal);
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
     private void changeStats (WorldMap worldMap){
@@ -151,6 +224,25 @@ public class SimulationPresenter implements ChangeListener {
         genotype5.setText("Genotyp 5: " + worldMap.getNumberOfEachGenotype()[5]);
         genotype6.setText("Genotyp 6: " + worldMap.getNumberOfEachGenotype()[6]);
         genotype7.setText("Genotyp 7: " + worldMap.getNumberOfEachGenotype()[7]);
+
+        if (markedAnimal != null) {
+            animalStatisticsChildren.setText("Animal Children: " + markedAnimal.getChildrenNumber());
+            animalStatisticsDescendants.setText("Animal Descendants: ");
+            animalStatisticsEnergy.setText("Animal Energy: " + markedAnimal.getEnergy());
+            animalStatisticsDeathDay.setText("Animal Death day: ");
+            animalStatisticsPlants.setText("Plants Eaten: " + markedAnimal.getEatenPlantsNumber());
+            animalStatisticsGenotype.setText("Genotype: " + Arrays.toString(markedAnimal.getGenome().getGeneList()));
+            animalStatisticsLifeDays.setText("Age: " + markedAnimal.getAge());
+        }
+        else {
+            animalStatisticsChildren.setText("Waiting for mark");
+            animalStatisticsDescendants.setText("Waiting for mark");
+            animalStatisticsEnergy.setText("Waiting for mark");
+            animalStatisticsDeathDay.setText("Waiting for mark");
+            animalStatisticsPlants.setText("Waiting for mark");
+            animalStatisticsGenotype.setText("Waiting for mark");
+            animalStatisticsLifeDays.setText("Waiting for mark");
+        }
 
     }
 
@@ -240,9 +332,12 @@ public class SimulationPresenter implements ChangeListener {
             else {
                 if (markedAnimal == animal){
                     setMarkedAnimal(null);
+
+
                 }
                 else {
                     setMarkedAnimal(animal);
+
                 }
             }
         }
@@ -274,7 +369,7 @@ public class SimulationPresenter implements ChangeListener {
         for(int i = 0; i<= constants.getMAP_HEIGHT(); i++){
             for(int j = 0; j <= constants.getMAP_WIDTH(); j++){
                 Vector2d vec = new Vector2d(j,i);
-                if(worldMap.objectAt(vec) != null && worldMap.objectAt(vec).equals("*")){
+                if(worldMap.objectAt(vec) != null && (worldMap.objectAt(vec).equals("*") ||worldMap.objectAt(vec).equals("#")) ){
                     mapGrid.add(createGridItem(worldMap.objectAt(vec).toString(), vec),j+1,gridHeight - i - 1);
                 }
                 else if (worldMap.objectAt(vec) != null) {
@@ -286,6 +381,7 @@ public class SimulationPresenter implements ChangeListener {
                 }
             }
         }
+        //Platform.runLater(this::scrollToCenter);
     }
 
     private void clearGrid() {
@@ -313,14 +409,7 @@ public class SimulationPresenter implements ChangeListener {
         animalsList.setUp(worldMap.getAnimalPositions().get(position), this, markedAnimal);
     }
 
-    private void setUpWriter() {
-        String path = (saveFilePath.getText());
-        if(!path.endsWith(".csv")) {
-            new Alert(Alert.AlertType.ERROR, "Prosze podac nazwe pliku z rozszerzeniem .csv").show();
-            return;
-        }
-        new CSVWriter(path);
-    }
+
 
     public void setMarkedAnimal(Animal markedAnimal) {
         if (this.markedAnimal != null){
@@ -351,9 +440,12 @@ public class SimulationPresenter implements ChangeListener {
         }
         if (this.markedAnimal == null){
             worldMap.deleteMark();
+
         }
         else {
             worldMap.addMark(this.markedAnimal);
+            worldMap.deleteMark();
+
         }
     }
 

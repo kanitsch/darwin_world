@@ -19,7 +19,7 @@ fx:controller="agh.ics.oop.presenter.SimulationPresenter">
 
     <left>
         <VBox>
-            <ScrollPane fitToWidth="true" fitToHeight="true" maxWidth="500.0">
+            <ScrollPane fitToWidth="true" fitToHeight="true" maxWidth="800.0" fx:id="mapScrollPane">
                 <GridPane gridLinesVisible="true"
                           alignment="CENTER"
                           style="-fx-padding: 50;"
@@ -32,6 +32,30 @@ fx:controller="agh.ics.oop.presenter.SimulationPresenter">
         <Region prefWidth="50.0"/>
     </center>
     <right>
+        <HBox>
+            <VBox alignment="CENTER" style="-fx-spacing: 15; -fx-alignment: center; -fx-padding: 20;">
+            <VBox alignment="CENTER_RIGHT" style="-fx-padding: 10;">
+                <Label fx:id="animalStatisticsChildren" />
+            </VBox>
+                <VBox alignment="CENTER_RIGHT" style="-fx-padding: 10;">
+                    <Label fx:id="animalStatisticsDeathDay" />
+                </VBox>
+                <VBox alignment="CENTER_RIGHT" style="-fx-padding: 10;">
+                    <Label fx:id="animalStatisticsDescendants" />
+                </VBox>
+                <VBox alignment="CENTER_RIGHT" style="-fx-padding: 10;">
+                    <Label fx:id="animalStatisticsEnergy" />
+                </VBox>
+                <VBox alignment="CENTER_RIGHT" style="-fx-padding: 10;">
+                    <Label fx:id="animalStatisticsLifeDays" />
+                </VBox>
+                <VBox alignment="CENTER_RIGHT" style="-fx-padding: 10;">
+                    <Label fx:id="animalStatisticsPlants" />
+                </VBox>
+                <VBox alignment="CENTER_RIGHT" style="-fx-padding: 10;">
+                    <Label fx:id="animalStatisticsGenotype" />
+                </VBox>
+            </VBox>
         <VBox alignment="CENTER" style="-fx-spacing: 15; -fx-alignment: center; -fx-padding: 20;">
             <VBox alignment="CENTER_RIGHT" style="-fx-padding: 10;">
                 <Label fx:id="numberOfAnimalsLabel" />
@@ -83,18 +107,13 @@ fx:controller="agh.ics.oop.presenter.SimulationPresenter">
                 </HBox>
             </HBox>
         </VBox>
+        </HBox>
     </right>
     <bottom>
         <HBox alignment="CENTER" spacing="10">
             <Button fx:id="resumeButton" text="START" textAlignment="RIGHT"/>
             <Button fx:id="pauseButton" text="STOP"/>
-            <VBox alignment="CENTER">
-                <Button fx:id="saveButton" text="SAVE"/>
-                <Label text="Path for csv file"/>
-                <TextField fx:id="saveFilePath"/>
-                <Label text="Separator for file"/>
-                <TextField fx:id="sepCSV"/>
-            </VBox>
+
         </HBox>
     </bottom>
 </BorderPane>

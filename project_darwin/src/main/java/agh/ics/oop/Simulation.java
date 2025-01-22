@@ -55,8 +55,8 @@ public class Simulation implements Runnable {
                 worldMap.animalsEat();
                 worldMap.animalsBreed();
                 worldMap.growGrass();
-                var day = getDay() - 1;
-                worldMap.atMapChanged("Day" + day + "passed");
+                this.day++;
+                worldMap.atMapChanged("Day" + (day - 1) + "passed");
 
                 sleep(sleepTime);
             }

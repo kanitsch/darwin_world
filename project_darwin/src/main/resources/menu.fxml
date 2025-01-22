@@ -58,15 +58,18 @@
     <Label text="Energy Lost Per Day" GridPane.columnIndex="0" GridPane.rowIndex="15"/>
     <IntegerField fx:id="energyLostPerDay" GridPane.columnIndex="1" GridPane.rowIndex="15"/>
 
+    <Label text="Sleep time For Simulation" GridPane.columnIndex="0" GridPane.rowIndex="16"/>
+    <IntegerField fx:id="sleepTimeLabel" GridPane.columnIndex="1" GridPane.rowIndex="16"/>
 
-    <HBox styleClass="checkbox-group" GridPane.columnIndex="0" GridPane.rowIndex="16" GridPane.columnSpan="2">
+
+    <HBox styleClass="checkbox-group" GridPane.columnIndex="0" GridPane.rowIndex="117" GridPane.columnSpan="2">
         <CheckBox text="Good Harvest" fx:id="goodHarvest"/>
         <CheckBox text="Complete Random" fx:id="completeRandom"/>
         <CheckBox text="Export Statistics" fx:id="formExportStatistics"/>
     </HBox>
 
 
-    <HBox spacing="10" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="17" GridPane.columnSpan="2">
+    <HBox spacing="10" alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="118" GridPane.columnSpan="2">
         <Button text="Create Game" fx:id="createGame"/>
         <Button text="Export Configuration" fx:id="exportConfiguration"/>
         <Button text="Import Configuration" fx:id="importConfiguration"/>

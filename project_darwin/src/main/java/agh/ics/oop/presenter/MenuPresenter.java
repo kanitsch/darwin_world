@@ -57,6 +57,8 @@ public class MenuPresenter extends BasePresenter {
     private IntegerField energyLostForReproduction;
     @FXML
     private IntegerField energyLostPerDay;
+    @FXML
+    private IntegerField sleepTimeLabel;
 
     @FXML
     private CheckBox formExportStatistics;
@@ -188,6 +190,7 @@ public class MenuPresenter extends BasePresenter {
         minimalBreedingEnergy.setValue(Integer.parseInt(vals[12]));
         energyLostForReproduction.setValue(Integer.parseInt(vals[13]));
         energyLostPerDay.setValue(Integer.parseInt(vals[14]));
+        sleepTimeLabel.setValue(Integer.parseInt(vals[15]));
     }
 
     public void saveConfig() {
@@ -223,6 +226,7 @@ public class MenuPresenter extends BasePresenter {
             writer.write(minimalBreedingEnergy.getValue() + "\n");
             writer.write(energyLostForReproduction.getValue() + "\n");
             writer.write(energyLostPerDay.getValue() + "\n");
+            writer.write(sleepTimeLabel.getValue() + "\n");
         } catch (IOException e) {
             showError("Something went wrong");
 
@@ -244,11 +248,11 @@ public class MenuPresenter extends BasePresenter {
             return;
         }
 
-        String[] lines = new String[16];
+        String[] lines = new String[17];
         int i = 0;
         try(Scanner scanner = new Scanner(file)) {
             while(scanner.hasNextLine()) {
-                if(i >= 16) {
+                if(i >= 17) {
                     break;
                 }
                 String line = scanner.nextLine();
@@ -261,8 +265,8 @@ public class MenuPresenter extends BasePresenter {
             return;
         }
 
-        if(i != 15) {
-            showError("Wrong file length. File should be 14 lines long!");
+        if(i != 16) {
+            showError("Wrong file length. File should be 16 lines long!");
             return;
         }
 
@@ -291,6 +295,8 @@ public class MenuPresenter extends BasePresenter {
 
         setUpConstants(id);
         //Simulation simulation = new Simulation(id,1);
+        presenter.setShouldExportStatistics(formExportStatistics.isSelected());
+        presenter.setSleepTime(sleepTimeLabel.getValue());
 
         presenter.setUp(id, app, stage);
         presenter.run();

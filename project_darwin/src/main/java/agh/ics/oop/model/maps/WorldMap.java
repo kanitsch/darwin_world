@@ -129,7 +129,15 @@ public class WorldMap {
     }
 
     public boolean isWithinGoodHarvestArea(Vector2d grassPosition) {
+        Constants constants = ConstantsList.getConstants(simulationId);
+        if (constants.isGOOD_HARVEST())
         return grassPosition.getX()>=goodHarvestBottomLeft.getX() && grassPosition.getY()>=goodHarvestBottomLeft.getY() && grassPosition.getX()<goodHarvestBottomLeft.getX()+goodHarvestAreaWidth-1 && grassPosition.getY()<goodHarvestBottomLeft.getY()+goodHarvestAreaWidth-1;
+        else {
+            int equatorStart= (int) (constants.getMAP_HEIGHT()*0.4);
+            int equatorEnd= (int) (constants.getMAP_HEIGHT()*0.6);
+
+            return grassPosition.getY() >= equatorStart && grassPosition.getY() <= equatorEnd;
+        }
     }
 
 

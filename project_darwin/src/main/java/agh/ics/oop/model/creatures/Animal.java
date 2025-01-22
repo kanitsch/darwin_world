@@ -20,7 +20,7 @@ public class Animal implements WorldElement {
     private Genome genome;
     private int age;
     private int dateOfDeath=-1;
-    private List<Animal> descendants=new ArrayList<Animal>();
+    private List<Animal> children =new ArrayList<Animal>();
 
 
     public Animal(Vector2d position, int simulationId, int energy, Genome genome) {
@@ -80,8 +80,8 @@ public class Animal implements WorldElement {
 
     public void setDateOfDeath(int date) {this.dateOfDeath = date;}
 
-    public List<Animal> getDescendants() {
-        return descendants;
+    public List<Animal> getChildren() {
+        return children;
     }
 
     public void incrementAge(){
@@ -151,9 +151,9 @@ public class Animal implements WorldElement {
         this.removeEnergy(constants.getENERGY_LOST_FOR_REPRODUCTION());
         partner.removeEnergy(constants.getENERGY_LOST_FOR_REPRODUCTION());
         this.childrenNumber++;
-        this.descendants.add(offspring);
+        this.children.add(offspring);
         partner.childrenNumber++;
-        partner.descendants.add(offspring);
+        partner.children.add(offspring);
 
         return offspring;
     }
@@ -166,7 +166,7 @@ public class Animal implements WorldElement {
         visited.add(startingVertex);
         while (!stack.isEmpty()){
             Animal checked = stack.pop();
-            List<Animal> children = checked.getDescendants();
+            List<Animal> children = checked.getChildren();
             for (Animal child : children){
                 if (!visited.contains(child)){
                     stack.push(child);
@@ -179,7 +179,7 @@ public class Animal implements WorldElement {
     }
 
     public int getNumberOfDescendants() {
-        descendants=getDescendantsList(this);
+        List<Animal> descendants =getDescendantsList(this);
         return descendants.size();
     }
 

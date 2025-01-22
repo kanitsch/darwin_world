@@ -1,7 +1,6 @@
 package agh.ics.oop.model.util;
 
 import agh.ics.oop.model.creatures.Animal;
-import agh.ics.oop.model.util.GraphVertex;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -18,7 +17,7 @@ public class DFS {
         visited.add(startingVertex);
         while (!stack.isEmpty()){
             Animal checked = stack.pop();
-            List<Animal> children = checked.getDescendants();
+            List<Animal> children = checked.getChildren();
             for (Animal child : children){
                 if (!visited.contains(child)){
                     stack.push(child);

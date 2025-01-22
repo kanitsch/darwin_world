@@ -44,8 +44,7 @@ public class MenuPresenter extends BasePresenter {
     private IntegerField numberOfAnimals;
     @FXML
     private IntegerField numberOfPlants;
-    @FXML
-    private IntegerField geneomeLength;
+
     @FXML
     private IntegerField minMutations;
     @FXML
@@ -183,13 +182,12 @@ public class MenuPresenter extends BasePresenter {
         completeRandom.setSelected(Boolean.parseBoolean(vals[6]));
         numberOfAnimals.setValue(Integer.parseInt(vals[7]));
         numberOfPlants.setValue(Integer.parseInt(vals[8]));
-        geneomeLength.setValue(Integer.parseInt(vals[9]));
-        minMutations.setValue(Integer.parseInt(vals[10]));
-        maxMutations.setValue(Integer.parseInt(vals[11]));
-        plantsPerDay.setValue(Integer.parseInt(vals[12]));
-        minimalBreedingEnergy.setValue(Integer.parseInt(vals[13]));
-        energyLostForReproduction.setValue(Integer.parseInt(vals[14]));
-        energyLostPerDay.setValue(Integer.parseInt(vals[15]));
+        minMutations.setValue(Integer.parseInt(vals[9]));
+        maxMutations.setValue(Integer.parseInt(vals[10]));
+        plantsPerDay.setValue(Integer.parseInt(vals[11]));
+        minimalBreedingEnergy.setValue(Integer.parseInt(vals[12]));
+        energyLostForReproduction.setValue(Integer.parseInt(vals[13]));
+        energyLostPerDay.setValue(Integer.parseInt(vals[14]));
     }
 
     public void saveConfig() {
@@ -219,7 +217,6 @@ public class MenuPresenter extends BasePresenter {
             writer.write(completeRandom.isSelected() + "\n");
             writer.write(numberOfAnimals.getValue() + "\n");
             writer.write(numberOfPlants.getValue() + "\n");
-            writer.write(geneomeLength.getValue() + "\n");
             writer.write(minMutations.getValue() + "\n");
             writer.write(maxMutations.getValue() + "\n");
             writer.write(plantsPerDay.getValue() + "\n");
@@ -247,11 +244,11 @@ public class MenuPresenter extends BasePresenter {
             return;
         }
 
-        String[] lines = new String[17];
+        String[] lines = new String[16];
         int i = 0;
         try(Scanner scanner = new Scanner(file)) {
             while(scanner.hasNextLine()) {
-                if(i >= 17) {
+                if(i >= 16) {
                     break;
                 }
                 String line = scanner.nextLine();
@@ -264,7 +261,7 @@ public class MenuPresenter extends BasePresenter {
             return;
         }
 
-        if(i != 16) {
+        if(i != 15) {
             showError("Wrong file length. File should be 14 lines long!");
             return;
         }

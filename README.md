@@ -3,7 +3,7 @@ Autorzy Karolina Nitsch, Michał Ryz
 
 Projekt na Programowanie Obiektowe 2024/25 Darwin World.
 
-Legenda:
+Legenda
 "*" trawa
 "#" duża trawa 2x2
 "A" wiele zwierząt na jednym polu

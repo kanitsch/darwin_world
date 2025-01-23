@@ -26,5 +26,17 @@ public class TestAnimal {
         }
 
     }
+    @Test
+    public void descendantsNumber() {
+        Constants constants = new Constants(8,10,5,5,5,false,false,0,0,0,0,0,0,0,1);
+        ConstantsList.addToConstantsList(0, constants);
+        Animal animal1=new Animal(new Vector2d(2,2),0,6,new Genome(0));
+        Animal animal2=new Animal(new Vector2d(2,2),0,6,new Genome(0));
+        Animal offspring =animal1.breed(animal2);
+        offspring.breed(animal1);
+        assertEquals(2,animal1.getNumberOfDescendants());
+        assertEquals(2,animal2.getNumberOfDescendants());
+        assertEquals(1,offspring.getNumberOfDescendants());
+    }
 
 }

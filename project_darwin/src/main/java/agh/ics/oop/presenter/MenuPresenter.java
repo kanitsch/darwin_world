@@ -173,7 +173,7 @@ public class MenuPresenter extends BasePresenter {
 
         return true;
     }
-    private void setFields(String[] vals) {
+    public void setFields(String[] vals) {
         numberOfGenes.setValue(Integer.parseInt(vals[0]));
         startingAnimalEnergy.setValue(Integer.parseInt(vals[1]));
         energyFromPlant.setValue(Integer.parseInt(vals[2]));

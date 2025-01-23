@@ -183,9 +183,4 @@ public class Animal implements WorldElement {
         return descendants.size();
     }
 
-
-
-
-
-
 }

@@ -4,7 +4,6 @@ import agh.ics.oop.model.ChangeListener;
 import agh.ics.oop.model.creatures.Animal;
 import agh.ics.oop.model.creatures.Grass;
 import agh.ics.oop.model.creatures.LargeGrass;
-import agh.ics.oop.model.creatures.WorldElement;
 import agh.ics.oop.model.info.Constants;
 import agh.ics.oop.model.info.ConstantsList;
 import agh.ics.oop.model.util.*;
@@ -31,10 +30,8 @@ public class WorldMap {
     private final HashSet<Animal>[] commonGenotypeAnimals = new HashSet[8];
     private Animal markedAnimal;
     private final HashSet<UUID> descendants = new HashSet<>();
-    private final Map<UUID, GraphVertex> familyTree = new HashMap<>();
-    private CSVWriter csvWriter;
     private int day=0;
-
+    private  List<Animal> deadAnimals = new ArrayList<>();
 
     public WorldMap(int simulationId) {
         this.grass = new HashMap<>();
@@ -188,6 +185,7 @@ public class WorldMap {
                 Animal animal = iterator.next();
                 if (animal.getEnergy() <= 0) {
                     animal.setDateOfDeath(this.getDay());
+                    deadAnimals.add(animal);
                     iterator.remove();
                     totalDeadAnimals++;
                     totalLifeSpan += animal.getAge();
@@ -374,10 +372,6 @@ public class WorldMap {
         observers.add(observer);
     }
 
-    public void removeObserver(ChangeListener observer) {
-        observers.remove(observer);
-    }
-
     public void atMapChanged(String str) {
         for(ChangeListener observer : observers) {
             observer.mapChanged(this, str);
@@ -409,32 +403,21 @@ public class WorldMap {
     }
 
     public void addMark (Animal markedAnimal){
-        // if previously marked animal is still marked, unmark it
         if (!(markedAnimal == null)){
             deleteMark();
         }
-
         this.markedAnimal = markedAnimal;
-//        GraphVertex markedAnimalVertex = familyTree.get(markedAnimal.getId());
-//        DFS dfs = new DFS();
-//        List<GraphVertex> descendantsList = dfs.getDescendantsList(markedAnimalVertex);
-//        for (GraphVertex vertex : descendantsList){
-//            descendants.add(vertex.getId());
-//        }
     }
 
     public void deleteMark(){
-        // clear stats for marked animal
         this.markedAnimal = null;
         descendants.clear();
-        //daysOfLiving = 0;
-        //dayOfDeath = 0;
     }
 
     public HashSet<Animal> getPopularGenotypeAnimals() {
-        String mostPopularGenotype = getMostPopularGenotype(); // Get the most popular genotype
+        String mostPopularGenotype = getMostPopularGenotype();
         if (mostPopularGenotype.equals("brak")) {
-            return new HashSet<>(); // Return an empty set if no popular genotype is found
+            return new HashSet<>();
         }
         HashSet<Animal> popularGenotypeAnimals = new HashSet<>();
         for (List<Animal> animalList : animals.values()) {
@@ -448,20 +431,5 @@ public class WorldMap {
         return popularGenotypeAnimals;
     }
 
-
-    public int[] getNumberOfEachGenotype() {
-        return numberOfEachGenotype;
-    }
-
-    private String[] getStatsForCSV() {
-        String[] data = new String[6];
-        data[0] = String.valueOf(getTotalAnimals());
-        data[1] = String.valueOf(totalLifeSpan);
-        data[2] = String.valueOf(getFreeFields());
-        data[3] = String.valueOf(getAverageEnergy());
-        data[4] = String.valueOf(getAverageLifeSpan());
-        data[5] = String.valueOf(getAverageNumberOfChildren() );
-        return data;
-    }
 }
 

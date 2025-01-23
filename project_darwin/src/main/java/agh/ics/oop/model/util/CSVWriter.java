@@ -41,7 +41,4 @@ public class CSVWriter {
         );
     }
 
-    public static void setConfigurationHeader(PrintWriter writer) {
-        writer.println("Property,Value");
-    }
 }

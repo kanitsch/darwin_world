@@ -69,22 +69,7 @@ public class SimulationPresenter implements ChangeListener {
     @FXML
 
     private Label getNumberOfEmptyFieldsLabel = new Label();
-//    @FXML
-//    private Label  genotype0 = new Label();
-//    @FXML
-//    private Label  genotype1 = new Label();
-//    @FXML
-//    private Label  genotype2 = new Label();
-//    @FXML
-//    private Label  genotype3 = new Label();
-//    @FXML
-//    private Label  genotype4 = new Label();
-//    @FXML
-//    private Label  genotype5 = new Label();
-//    @FXML
-//    private Label  genotype6 = new Label();
-//    @FXML
-//    private Label  genotype7 = new Label();
+
     static final int CELL_WIDTH = 40;
     static final int CELL_HEIGHT = 40;
 
@@ -160,7 +145,6 @@ public class SimulationPresenter implements ChangeListener {
             Platform.runLater(this::scrollToCenter);
         });
 
-        //Platform.runLater(this::scrollToCenter);
 
 
         resumeButton.setOnAction((e) -> simulation.resume());
@@ -184,7 +168,7 @@ public class SimulationPresenter implements ChangeListener {
         });
 
         if (shouldExportStatistics) {
-            exportCsvStatistics(worldMap);
+                exportCsvStatistics(worldMap);
         };
 
 
@@ -220,28 +204,19 @@ public class SimulationPresenter implements ChangeListener {
 
     private void changeStats (WorldMap worldMap){
         System.out.println("Stats Changed");
-        numberOfAnimalsLabel.setText("Liczba zyjacyh zwierzat: " + worldMap.getTotalAnimals());
-        numberOfPlantsLabel.setText("Aktualna liczba roslin: " + worldMap.getTotalPlants());
-        numberOfEmptyFieldsLabel.setText("Aktualna liczba pustych pol: " + worldMap.getFreeFields());
-        averageEnergyLabel.setText("Sredni poziom energii dla zyjacych zwierzat: " + worldMap.getAverageEnergy());
+        numberOfAnimalsLabel.setText("Number of alive animals: " + worldMap.getTotalAnimals());
+        numberOfPlantsLabel.setText("Actual number of plants: " + worldMap.getTotalPlants());
+        numberOfEmptyFieldsLabel.setText("Actual number of free fields: " + worldMap.getFreeFields());
+        averageEnergyLabel.setText("Average energy: " + worldMap.getAverageEnergy());
         averageEnergyVBox.setVisible(worldMap.getAverageEnergy() != -1);
         averageEnergyVBox.setManaged(worldMap.getAverageEnergy() != -1);
-        averageDaysOfLivingLabel.setText("Srednia dlugosc zycia dla wszystkich martwych zwierzat: " + worldMap.getAverageLifeSpan());
+        averageDaysOfLivingLabel.setText("Average life span: " + worldMap.getAverageLifeSpan());
         averageDaysOfLivingVBox.setVisible(worldMap.getAverageLifeSpan() != -1);
         averageDaysOfLivingVBox.setManaged(worldMap.getAverageLifeSpan() != -1);
-        averageChildrenNumberLabel.setText("Srednia liczba dzieci dla zyjacych zwierzat: " + worldMap.getAverageNumberOfChildren());
+        averageChildrenNumberLabel.setText("Average number of children: " + worldMap.getAverageNumberOfChildren());
         averageChildrenNumberVBox.setVisible(worldMap.getAverageNumberOfChildren() != -1);
         averageChildrenNumberVBox.setManaged(worldMap.getAverageNumberOfChildren() != -1);
-        getNumberOfEmptyFieldsLabel.setText("Liczba wolnych pol: " + worldMap.getFreeFields());
-        mostPopularGenotypeLabel.setText("Najpopularniejszy genotyp: "+worldMap.getMostPopularGenotype());
-//        genotype0.setText("Genotyp 0: " + worldMap.getNumberOfEachGenotype()[0]);
-//        genotype1.setText("Genotyp 1: " + worldMap.getNumberOfEachGenotype()[1]);
-//        genotype2.setText("Genotyp 2: " + worldMap.getNumberOfEachGenotype()[2]);
-//        genotype3.setText("Genotyp 3: " + worldMap.getNumberOfEachGenotype()[3]);
-//        genotype4.setText("Genotyp 4: " + worldMap.getNumberOfEachGenotype()[4]);
-//        genotype5.setText("Genotyp 5: " + worldMap.getNumberOfEachGenotype()[5]);
-//        genotype6.setText("Genotyp 6: " + worldMap.getNumberOfEachGenotype()[6]);
-//        genotype7.setText("Genotyp 7: " + worldMap.getNumberOfEachGenotype()[7]);
+        mostPopularGenotypeLabel.setText("The most popular genotype: "+worldMap.getMostPopularGenotype());
 
         if (markedAnimal != null) {
             animalStatisticsChildren.setText("Animal Children: " + markedAnimal.getChildrenNumber());
@@ -253,20 +228,9 @@ public class SimulationPresenter implements ChangeListener {
             animalStatisticsLifeDays.setText("Age: " + markedAnimal.getAge());
 
             if (markedAnimal != null && markedAnimal.getDateOfDeath()>=0) {
-                setMarkedAnimal(null); // Clear the mark if the animal is dead
+                setMarkedAnimal(null);
             }
-
         }
-        else {
-            animalStatisticsChildren.setText("Waiting for mark");
-            animalStatisticsDescendants.setText("Waiting for mark");
-            animalStatisticsEnergy.setText("Waiting for mark");
-            animalStatisticsDeathDay.setText("Waiting for mark");
-            animalStatisticsPlants.setText("Waiting for mark");
-            animalStatisticsGenotype.setText("Waiting for mark");
-            animalStatisticsLifeDays.setText("Waiting for mark");
-        }
-
     }
 
     private Label createGridItem(String content, Vector2d position){
@@ -349,18 +313,11 @@ public class SimulationPresenter implements ChangeListener {
     private void handleButtonClick(Button button, String content, Animal animal) throws IOException {
         System.out.println("Clicked");
         if (simulation.isStopped()){
-            if (content.equals("A")){
-                //handleNewWindow(animal.getPosition());
+            if (markedAnimal == animal){
+                setMarkedAnimal(null);
             }
             else {
-                if (markedAnimal == animal){
-                    setMarkedAnimal(null);
-
-                }
-                else {
-                    setMarkedAnimal(animal);
-
-                }
+                setMarkedAnimal(animal);
             }
         }
     }
@@ -424,15 +381,6 @@ public class SimulationPresenter implements ChangeListener {
         simulation.end();
     }
 
-    public void handleNewWindow(Vector2d position) throws IOException {
-        AnimalsList animalsList = new AnimalsList();
-        SimulationApp app = new SimulationApp();
-        Stage stage = app.startAnimalsList(animalsList);
-        animalsList.setUp(worldMap.getAnimalPositions().get(position), this, markedAnimal);
-    }
-
-
-
     public void setMarkedAnimal(Animal markedAnimal) {
         if (this.markedAnimal != null){
             Button oldButton = buttonMap.get(this.markedAnimal.getPosition());
@@ -451,6 +399,7 @@ public class SimulationPresenter implements ChangeListener {
             }
         }
         this.markedAnimal = markedAnimal;
+
         if (this.markedAnimal != null) {
             Button newButton = buttonMap.get(this.markedAnimal.getPosition());
             if (popularGeneAnimals.contains(this.markedAnimal)){

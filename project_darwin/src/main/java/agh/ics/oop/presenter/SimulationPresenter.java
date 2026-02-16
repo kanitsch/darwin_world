@@ -204,9 +204,9 @@ public class SimulationPresenter implements ChangeListener {
 
     private void changeStats (WorldMap worldMap){
         System.out.println("Stats Changed");
-        numberOfAnimalsLabel.setText("Number of alive animals: " + worldMap.getTotalAnimals());
-        numberOfPlantsLabel.setText("Actual number of plants: " + worldMap.getTotalPlants());
-        numberOfEmptyFieldsLabel.setText("Actual number of free fields: " + worldMap.getFreeFields());
+        numberOfAnimalsLabel.setText("Number of living animals: " + worldMap.getTotalAnimals());
+        numberOfPlantsLabel.setText("Number of plants: " + worldMap.getTotalPlants());
+        numberOfEmptyFieldsLabel.setText("Number of free fields: " + worldMap.getFreeFields());
         averageEnergyLabel.setText("Average energy: " + worldMap.getAverageEnergy());
         averageEnergyVBox.setVisible(worldMap.getAverageEnergy() != -1);
         averageEnergyVBox.setManaged(worldMap.getAverageEnergy() != -1);
